@@ -9,6 +9,7 @@ services:
     command:
     volumes:
       - ./config.yml:/etc/gohack/config.yml
+      - .:/app
     networks:
       - gohack
     restart: unless-stopped

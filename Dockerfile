@@ -4,7 +4,8 @@ WORKDIR /app
 RUN task build-prod
 
 FROM alpine:3.13 as dev
-COPY --from=builder /app/build /app
+COPY --from=builder /app/build /app/build
+COPY . /app
 WORKDIR /app
 CMD ['task', 'dev' ]
 
