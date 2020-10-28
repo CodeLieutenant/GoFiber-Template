@@ -1,0 +1,18 @@
+sql: true # Set SQL as main secret storage, if this is set to false, mongodb uri is required
+console: true # Console logging
+debug: true # Debug enables PProf
+locale: en # GoHack Server validation locale
+
+databases:
+  # Storage engines - SQL and NoSQL(Mongo)
+  # There is not partial data storage support
+  sql:
+    provider: sqlite # supported drivers - sqlite, postgres, mysql
+    dsn: ./vauguard.db
+
+logging:
+  level: info # supported logging - debug, info, warning, error
+
+http:
+  prefork: false
+  address: :4000 # HTTP Address
