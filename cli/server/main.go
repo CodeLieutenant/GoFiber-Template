@@ -48,7 +48,7 @@ func main() {
 	app.Use(requestid.New())
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
+		return c.JSON("Hello, World!")
 	})
 
 	if err := app.Listen(viper.GetString("http.address")); err != nil {

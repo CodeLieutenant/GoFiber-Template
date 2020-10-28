@@ -7,6 +7,7 @@ services:
       dockerfile: Dockerfile
       target: dev
     command:
+      - task dev
     volumes:
       - ./config.yml:/etc/gohack/config.yml
       - .:/app
@@ -19,6 +20,8 @@ services:
     links:
       - postgres
       - redis
+    ports:
+      - 4000:4000
   postgres:
     environment:
       POSTGRES_DB: gohack
