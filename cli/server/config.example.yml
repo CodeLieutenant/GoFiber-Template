@@ -3,13 +3,14 @@ console: true # Console logging
 debug: true # Debug enables PProf
 locale: en # GoHack Server validation locale
 
-databases:
-  # Storage engines - SQL and NoSQL(Mongo)
-  # There is not partial data storage support
-  sql:
-    provider: sqlite # supported drivers - sqlite, postgres, mysql
-    dsn: ./vauguard.db
-
+database:
+  host: localhost
+  user: gohack
+  password: gohack
+  dbname: gohack
+  port: 5432
+  timezone: UTC
+  sslmode: false
 logging:
   level: info # supported logging - debug, info, warning, error
 

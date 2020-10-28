@@ -1,29 +1,34 @@
 version: '3.4'
 
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - ./config.yml:/etc/gohack/config.yml
-    networks:
-      - gohack
-    restart: unless-stopped
-    depends_on:
-      - postgres
-      - redis
-    links:
-      - postgres
-      - redis
+#  app:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    volumes:
+#      - ./config.yml:/etc/gohack/config.yml
+#    networks:
+#      - gohack
+#    restart: unless-stopped
+#    depends_on:
+#      - postgres
+#      - redis
+#    links:
+#      - postgres
+#      - redis
   postgres:
-    image: postgresql:12.3-alpine
+    environment:
+      POSTGRES_DB: gohack
+      PGDATA: /data/db
+      POSTGRES_USER: gohack
+      POSTGRES_PASSWORD: gohack
+    image: postgres:12.3-alpine
     ports:
       - 5432:5432
     networks:
       - gohack
     volumes:
-      - gohack:/var/lib/postgresql/data/pgdata
+      - gohack:/data/db
     restart: unless-stopped
   redis:
     image: redis:6.0.6-alpine
