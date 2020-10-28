@@ -1,21 +1,23 @@
 version: '3.4'
 
 services:
-#  app:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    volumes:
-#      - ./config.yml:/etc/gohack/config.yml
-#    networks:
-#      - gohack
-#    restart: unless-stopped
-#    depends_on:
-#      - postgres
-#      - redis
-#    links:
-#      - postgres
-#      - redis
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    command:
+    volumes:
+      - ./config.yml:/etc/gohack/config.yml
+    networks:
+      - gohack
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+    links:
+      - postgres
+      - redis
   postgres:
     environment:
       POSTGRES_DB: gohack

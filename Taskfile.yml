@@ -23,10 +23,8 @@ tasks:
     dir: ./cli/server
     cmds:
       - fiber dev --root ../../
-#  dev-docker:
-#    env:
-#      GOPATH: /go
-#    cmds:
-#      - docker run -it --rm -w "/go/src/github.com/BrosSquad/gohack"
-#    deps:
-#      - copy-config
+  dev-docker:
+    cmds:
+      - docker run -it --rm -w "/go/src/github.com/BrosSquad/gohack"
+    deps:
+      - copy-config
