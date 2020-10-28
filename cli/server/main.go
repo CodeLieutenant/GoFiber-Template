@@ -10,11 +10,10 @@ import (
 func main() {
 	// Setting up Viper
 	viper.AddConfigPath(".")
+	viper.AddConfigPath("/etc/gohack")
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
-	err := viper.ReadInConfig()
-
-	if err != nil {
+	if err := viper.ReadInConfig(); err != nil {
 		log.Fatalf("Fatal error config file: %s \n", err)
 	}
 

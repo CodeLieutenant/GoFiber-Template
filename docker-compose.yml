@@ -1,0 +1,40 @@
+version: '3.4'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./config.yml:/etc/gohack/config.yml
+    networks:
+      - gohack
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+    links:
+      - postgres
+      - redis
+  postgres:
+    image: postgresql:12.3-alpine
+    ports:
+      - 5432:5432
+    networks:
+      - gohack
+    volumes:
+      - gohack:/var/lib/postgresql/data/pgdata
+    restart: unless-stopped
+  redis:
+    image: redis:6.0.6-alpine
+    ports:
+      - 6379:6379
+    networks:
+      - gohack
+    restart: unless-stopped
+networks:
+  gohack:
+    driver: bridge
+volumes:
+  gohack:
+    driver: local
