@@ -1,15 +1,12 @@
 version: '3'
 
-env:
-  CGO_ENABLED: 0
-  GOOS: {{OS}}
-  GOARCH: amd64
 tasks:
   build:
-    cmd:
+    cmds:
       - go build -o ./build/app{{exeExt}} ./cli/server
+      - cp ./cli/server/config.yml ./build/config.yml
   build-prod:
-    cmd:
+    cmds:
       - go mod download -x
       - mkdir -p build
       - go build -a -installsuffix cgo -o ./build/app{{exeExt}} ./cli/server
@@ -20,25 +17,16 @@ tasks:
     preconditions:
       - sh: '[ ! -f "{{.CONFIG_PATH}}/{{.CONFIG_NAME}}" ]'
       - msg: 'No config.yml file.'
-    cmd: cp ./cli/server/config.example.yml ./cli/server/config.yml
-  install-go-air:
-    preconditions:
-      - sh: '[ ! -f "./bin/air" ]'
-      - msg: 'No config.yml file.'
-    cmd:
-      - curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s
+    cmds:
+      - cp ./cli/server/config.example.yml ./cli/server/config.yml
   dev:
     dir: ./cli/server
-    cmd:
-      - ./bin/air
-    deps:
-      - copy-config
-      - install-go-air
-  dev-docker:
-    env:
-      GOPATH: /go
-    cmd:
-      - docker run -it --rm -w "/go/src/github.com/BrosSquad/gohack" \
-        -v $(pwd):/go/src/github.com/BrosSquad/gohack -p 4000:4000 cosmtrek/air
-    deps:
-      - copy-config
+    cmds:
+      - fiber dev --root ../../
+#  dev-docker:
+#    env:
+#      GOPATH: /go
+#    cmds:
+#      - docker run -it --rm -w "/go/src/github.com/BrosSquad/gohack"
+#    deps:
+#      - copy-config

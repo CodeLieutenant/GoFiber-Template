@@ -1,5 +1,5 @@
 tmp/
 .idea
 .vscode
-config.yml
+cli/server/config.yml
 build/
