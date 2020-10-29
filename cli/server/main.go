@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gofiber/fiber/v2/middleware/csrf"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/requestid"
 	"github.com/spf13/viper"
@@ -44,14 +45,25 @@ func main() {
 		log.Fatalf("Fatal error database file: %s \n", err)
 	}
 
-	app.Use(logger.New())
-	app.Use(requestid.New())
+	setupMiddleware(app)
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.JSON("Hello, World!")
+	// Serving React
+	app.Static("/", "../../dist")
+	app.Get("/", func(ctx *fiber.Ctx) error {
+		return ctx.SendFile("../../dist/index.html")
 	})
 
 	if err := app.Listen(viper.GetString("http.address")); err != nil {
 		log.Fatalf("Error while starting application: %v", err)
 	}
+}
+
+func setupMiddleware(app *fiber.App) {
+	app.Use(logger.New())
+	app.Use(requestid.New())
+	app.Use(csrf.New(csrf.Config{
+		Cookie: &fiber.Cookie{
+			HTTPOnly: true,
+		},
+	}))
 }
