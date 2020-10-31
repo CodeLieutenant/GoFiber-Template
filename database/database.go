@@ -2,6 +2,8 @@ package database
 
 import (
 	"fmt"
+	"io"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -28,12 +30,29 @@ func (c Config) String() string {
 	}
 
 	return fmt.Sprintf(
-		"user=%s host=%s password=%s dbname=%s port=%d sslmode=%s TimeZone=%s", c.User, c.Host,
-		c.Password, c.DbName, c.Port, sslMode, c.TimeZone)
+		"user=%s host=%s password=%s dbname=%s port=%d sslmode=%s TimeZone=%s",
+		c.User,
+		c.Host,
+		c.Password,
+		c.DbName,
+		c.Port,
+		sslMode,
+		c.TimeZone,
+	)
 }
 
-func ConnectDB(c Config) (_ *gorm.DB, err error) {
-	db, err = gorm.Open(postgres.Open(c.String()), &gorm.Config{})
+func ConnectDB(c Config, writers ...io.Writer) (_ *gorm.DB, err error) {
+	// w := io.MultiWriter(writers...)
+	db, err = gorm.Open(postgres.Open(c.String()), &gorm.Config{
+
+
+		// PrepareStmt: true,
+		// Logger: logger.New(w, logger.Config{
+		// 	SlowThreshold: time.Second,
+		// 	Colorful:      true,
+		// 	LogLevel:      logger.Info,
+		// }),
+	})
 
 	return db, err
 }

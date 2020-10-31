@@ -5,11 +5,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: dev
-    command:
-      - task dev
+      target: debug
     volumes:
-      - ./config.yml:/etc/gohack/config.yml
+      - cache:/go/pkg
+      - ${PWD}/cli/server/config.yml:/etc/gohack/config.yml
       - .:/app
     networks:
       - gohack
@@ -22,6 +21,7 @@ services:
       - redis
     ports:
       - 4000:4000
+      - 40000:40000
   postgres:
     environment:
       POSTGRES_DB: gohack
@@ -48,4 +48,6 @@ networks:
     driver: bridge
 volumes:
   gohack:
+    driver: local
+  cache:
     driver: local

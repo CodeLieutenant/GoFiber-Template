@@ -4,7 +4,7 @@ debug: true # Debug enables PProf
 locale: en # GoHack Server validation locale
 
 database:
-  host: localhost
+  host: postgres
   user: gohack
   password: gohack
   dbname: gohack

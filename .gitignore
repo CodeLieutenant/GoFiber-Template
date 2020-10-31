@@ -3,3 +3,4 @@ tmp/
 .vscode
 cli/server/config.yml
 build/
+_debug_bin
