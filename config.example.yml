@@ -1,5 +1,4 @@
 sql: true # Set SQL as main secret storage, if this is set to false, mongodb uri is required
-console: true # Console logging
 debug: true # Debug enables PProf
 locale: en # GoHack Server validation locale
 
@@ -11,8 +10,11 @@ database:
   port: 5432
   timezone: UTC
   sslmode: false
+
+# supported logging - debug, info, warning, error
 logging:
-  level: info # supported logging - debug, info, warning, error
+  level: info # Logger instance used in API
+  console: true # Console logging
 
 http:
   prefork: false

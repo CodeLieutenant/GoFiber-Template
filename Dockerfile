@@ -3,7 +3,7 @@ ARG PORT=4000
 COPY . /app
 WORKDIR /app
 EXPOSE ${PORT} 40000
-CMD ["/usr/bin/start-server", "/app/cli/server", "/app"]
+CMD ["/usr/bin/start-server", "/app", "/app"]
 
 
 FROM brossquad/fiber-dev:1.0.3 as dev

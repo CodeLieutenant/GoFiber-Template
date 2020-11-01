@@ -45,7 +45,6 @@ func ConnectDB(c Config, writers ...io.Writer) (_ *gorm.DB, err error) {
 	// w := io.MultiWriter(writers...)
 	db, err = gorm.Open(postgres.Open(c.String()), &gorm.Config{
 
-
 		// PrepareStmt: true,
 		// Logger: logger.New(w, logger.Config{
 		// 	SlowThreshold: time.Second,

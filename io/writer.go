@@ -1,32 +1,25 @@
 package io
 
 import (
-	"context"
 	"io"
-	goio "io"
 	"sync"
 )
 
 type parallelMultiWriter struct {
-	ctx    context.Context
-	cancel context.CancelFunc
-	w      []goio.Writer
-	wLen   int
-	wg     *sync.WaitGroup
+	w    []io.Writer
+	wLen int
+	wg   *sync.WaitGroup
 }
 
-func NewParallelMultiWriter(w ...goio.Writer) io.Writer {
-	ctx, cancel := context.WithCancel(context.Background())
+func NewParallelMultiWriter(w ...io.Writer) io.Writer {
 	return parallelMultiWriter{
-		ctx:    ctx,
-		cancel: cancel,
-		w:      w,
-		wLen:   len(w),
-		wg:     &sync.WaitGroup{},
+		w:    w,
+		wLen: len(w),
+		wg:   &sync.WaitGroup{},
 	}
 }
 
-func (w parallelMultiWriter) Write(bytes []byte) (int, error) {
+func (w parallelMultiWriter) Write(bytes []byte) (count int, err error) {
 	errCh := make(chan error, w.wLen)
 	defer close(errCh)
 	w.wg.Add(w.wLen)
@@ -46,14 +39,10 @@ func (w parallelMultiWriter) Write(bytes []byte) (int, error) {
 		close(errCh)
 	}()
 
-	count := 0
-	select {
-	case err, more := <-errCh:
-		if !more && err == nil {
-			count = len(bytes)
-		}
-
-		return count, err
+	err, more := <-errCh
+	if !more && err == nil {
+		count = len(bytes)
 	}
 
+	return count, err
 }
