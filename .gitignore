@@ -4,3 +4,4 @@ tmp/
 cli/server/config.yml
 build/
 _debug_bin
+vendor/
