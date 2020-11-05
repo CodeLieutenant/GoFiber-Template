@@ -1,4 +1,4 @@
-# GoHack
+# GoFiber - Boilerplate
 
 # Features
     -   Fiber v2
