@@ -24,7 +24,7 @@ tasks:
     cmds:
       - cp ./cli/server/config.example.yml ./cli/server/config.yml
   dev:
-    dir: ./cli/server
+    dir: .
     cmds:
       - fiber dev --root ../../
   dev-docker:

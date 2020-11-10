@@ -15,7 +15,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-func parseLogginLevel(level string) zerolog.Level {
+func parseLoggingLevel(level string) zerolog.Level {
 	switch level {
 	case "panic":
 		return zerolog.PanicLevel
@@ -43,15 +43,15 @@ func createLogger(writers ...io.Writer) zerolog.Logger {
 	}
 
 	logger := zerolog.New(io.MultiWriter(writers...)).With().Logger()
-	logger.Level(parseLogginLevel(viper.GetString("logging.level")))
+	logger.Level(parseLoggingLevel(viper.GetString("logging.level")))
 
 	return logger
 }
 
 func main() {
-	logginLevel := flag.String("logging", "debug", "Global logging level")
+	loggingLevel := flag.String("logging", "debug", "Global logging level")
 	flag.Parse()
-	zerolog.SetGlobalLevel(parseLogginLevel(*logginLevel))
+	zerolog.SetGlobalLevel(parseLoggingLevel(*loggingLevel))
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 
 	log.Debug().Msg("Starting application...\n")

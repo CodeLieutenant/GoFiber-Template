@@ -1,7 +1,7 @@
 tmp/
 .idea
 .vscode
-cli/server/config.yml
+config.yml
 build/
 _debug_bin
 vendor/

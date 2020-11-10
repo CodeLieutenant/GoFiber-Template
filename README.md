@@ -2,12 +2,9 @@
 
 # Features
     -   Fiber v2
-    -   Gorm
+    -   Gorm (PostgreSQL)
     -   Viper
     -   GoPlaygroundValidation
     -   Taskfile   
-    
-# Setup
-    ```sh
-        
-    ```
+    -   Mailing
+
