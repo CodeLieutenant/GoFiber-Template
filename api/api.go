@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"github.com/go-playground/validator/v10"
 	"io"
 
 	"github.com/rs/zerolog"
@@ -13,6 +14,7 @@ type (
 		Ctx    context.Context
 		DB     *gorm.DB
 		Logger zerolog.Logger
+		Validator *validator.Validate
 	}
 
 	Interface interface {

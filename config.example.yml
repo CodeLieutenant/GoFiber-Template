@@ -1,12 +1,12 @@
 sql: true # Set SQL as main secret storage, if this is set to false, mongodb uri is required
 debug: true # Debug enables PProf
-locale: en # GoHack Server validation locale
+locale: en
 
 database:
   host: postgres
-  user: gohack
-  password: gohack
-  dbname: gohack
+  user: gofiber-boilerplate
+  password: gofiber-boilerplate
+  dbname: gofiber-boilerplate
   port: 5432
   timezone: UTC
   sslmode: false

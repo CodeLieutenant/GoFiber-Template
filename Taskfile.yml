@@ -27,8 +27,3 @@ tasks:
     dir: .
     cmds:
       - fiber dev --root ../../
-  dev-docker:
-    cmds:
-      - docker run -it --rm -w "/go/src/github.com/BrosSquad/gohack"
-    deps:
-      - copy-config

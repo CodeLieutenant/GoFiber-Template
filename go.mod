@@ -1,4 +1,4 @@
-module gohack
+module github.com/BrosSquad/GoFiber-GoFiber-Boilerplate
 
 go 1.15
 
@@ -15,6 +15,7 @@ require (
 	github.com/magiconair/properties v1.8.4 // indirect
 	github.com/mitchellh/mapstructure v1.3.3 // indirect
 	github.com/pelletier/go-toml v1.8.1 // indirect
+	github.com/pkg/errors v0.8.1
 	github.com/rs/zerolog v1.20.0
 	github.com/spf13/afero v1.4.1 // indirect
 	github.com/spf13/cast v1.3.1 // indirect

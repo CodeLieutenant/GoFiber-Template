@@ -3,112 +3,90 @@ package main
 import (
 	"context"
 	"flag"
-	"gohack/api"
-	"gohack/database"
-	"io"
 	"os"
 	"os/signal"
-	"time"
 
+	"github.com/go-playground/locales/en"
+	ut "github.com/go-playground/universal-translator"
+	"github.com/go-playground/validator/v10"
+	en_translations "github.com/go-playground/validator/v10/translations/en"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
+
+	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/api"
+	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/handlers"
+	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/logging"
 )
-
-func parseLoggingLevel(level string) zerolog.Level {
-	switch level {
-	case "panic":
-		return zerolog.PanicLevel
-	case "fatal":
-		return zerolog.FatalLevel
-	case "error":
-		return zerolog.ErrorLevel
-	case "warn":
-		return zerolog.WarnLevel
-	case "debug":
-		return zerolog.DebugLevel
-	case "trace":
-		return zerolog.TraceLevel
-	}
-
-	return zerolog.InfoLevel
-}
-
-func createLogger(writers ...io.Writer) zerolog.Logger {
-	if viper.GetBool("logging.console") {
-		writers = append(writers, zerolog.ConsoleWriter{
-			Out:        os.Stdout,
-			TimeFormat: time.RFC3339,
-		})
-	}
-
-	logger := zerolog.New(io.MultiWriter(writers...)).With().Logger()
-	logger.Level(parseLoggingLevel(viper.GetString("logging.level")))
-
-	return logger
-}
 
 func main() {
 	loggingLevel := flag.String("logging", "debug", "Global logging level")
 	flag.Parse()
-	zerolog.SetGlobalLevel(parseLoggingLevel(*loggingLevel))
-	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 
-	log.Debug().Msg("Starting application...\n")
+	zerolog.SetGlobalLevel(logging.Parse(*loggingLevel))
+	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
+	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+
 	ctx, cancel := context.WithCancel(context.Background())
-	done := make(chan error)
+
 	signalCh := make(chan os.Signal, 1)
-	signal.Notify(signalCh, os.Interrupt, os.Kill)
+	signal.Notify(signalCh, os.Interrupt)
 
 	viper.AddConfigPath(".")
-	viper.AddConfigPath("/etc/gohack")
+	viper.AddConfigPath("/etc/nanorequestdecomposer")
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
 	log.Debug().Msg("Loading configuration files\n")
+
 	if err := viper.ReadInConfig(); err != nil {
 		log.Fatal().Msgf("Fatal error config file: %s \n", err)
 	}
 
-	log.Debug().Msg("Connecting to database\n")
-	db, err := database.ConnectDB(database.Config{
-		Host:     viper.GetString("database.host"),
-		User:     viper.GetString("database.user"),
-		Password: viper.GetString("database.password"),
-		DbName:   viper.GetString("database.dbname"),
-		Port:     uint16(viper.GetUint32("database.port")),
-		TimeZone: viper.GetString("database.timezone"),
-		SslMode:  viper.GetBool("database.sslmode"),
-	})
+	logger := logging.New(viper.GetString("logging.level"))
+
+	english := en.New()
+	uni := ut.New(english, english)
+
+	trans, _ := uni.GetTranslator(viper.GetString("locale"))
+	validate := validator.New()
+
+	if err := en_translations.RegisterDefaultTranslations(validate, trans); err != nil {
+		logger.Fatal().Err(err).Msg("Error while registering english translations")
+	}
 
 	container := api.Container{
-		DB:     db,
-		Ctx:    ctx,
-		Logger: createLogger(), // TODO: Add files for logging
+		Ctx:       ctx,
+		Logger:    logger,
+		Validator: validate,
 	}
 
-	if err != nil {
-		log.Fatal().
-			Err(err).
-			Msg("Fatal error database file\n")
-	}
+	go func(cancel *context.CancelFunc) {
+		s := <-signalCh
+		logger.Info().Msgf("Shutting down... Signal: %s\n", s)
+		(*cancel)()
+	}(&cancel)
 
-	go func(ctx context.Context) {
-		log.Debug().Msg("Starting HTTP Api")
-		provider := api.NewFiberApi(viper.GetBool("http.prefork"))
-		provider.Register(&container)
+	logger.Debug().Msg("Starting HTTP Api")
+
+	provider := api.NewFiberAPI(
+		viper.GetBool("http.prefork"),
+		viper.GetBool("debug"),
+		handlers.Error(trans),
+	)
+
+	go func() {
 		<-ctx.Done()
-		done <- provider.Close()
-	}(ctx)
 
-	s := <-signalCh
-	cancel()
-	err = <-done
+		if err := provider.Close(); err != nil {
+			logger.Error().
+				Err(err).
+				Msg("Error while shutting down application\n")
+		}
+	}()
 
-	if err != nil {
-		log.Error().
+	if err := provider.Register(&container); err != nil {
+		logger.Fatal().
 			Err(err).
-			Msg("Error while shutting down application\n")
+			Msg("Error while starting the app")
 	}
-
-	log.Info().Msgf("Shutting down... Signal: %s\n", s)
 }
