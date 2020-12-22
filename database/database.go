@@ -2,12 +2,14 @@ package database
 
 import (
 	"fmt"
+	"io"
+	"log"
+	"os"
+	"time"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
-	"io"
-	"log"
-	"time"
 )
 
 var (
@@ -43,10 +45,16 @@ func (c Config) String() string {
 	)
 }
 
-func ConnectDB(c fmt.Stringer, w io.Writer) (_ *gorm.DB, err error) {
+func ConnectDB(c fmt.Stringer, w io.Writer, debug bool) (_ *gorm.DB, err error) {
+	writers := []io.Writer{w}
+
+	if debug {
+		writers = append(writers, os.Stderr)
+	}
+
 	db, err = gorm.Open(postgres.Open(c.String()), &gorm.Config{
 		PrepareStmt: true,
-		Logger: logger.New(log.New(w, "\r\n", log.LstdFlags), logger.Config{
+		Logger: logger.New(log.New(io.MultiWriter(writers...), "\n", log.LstdFlags), logger.Config{
 			SlowThreshold: 200 * time.Millisecond,
 			LogLevel:      logger.Warn,
 			Colorful:      true,
@@ -54,4 +62,16 @@ func ConnectDB(c fmt.Stringer, w io.Writer) (_ *gorm.DB, err error) {
 	})
 
 	return db, err
+}
+
+func Close() error {
+	if db != nil {
+		sqlDb, err := db.DB()
+		if err != nil {
+			return err
+		}
+		return sqlDb.Close()
+	}
+
+	return nil
 }

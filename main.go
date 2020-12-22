@@ -3,8 +3,10 @@ package main
 import (
 	"context"
 	"flag"
+	"io"
 	"os"
 	"os/signal"
+	"path/filepath"
 
 	"github.com/go-playground/locales/en"
 	ut "github.com/go-playground/universal-translator"
@@ -15,9 +17,34 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/api"
+	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/api/routes"
+	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/container"
+	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/database"
 	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/handlers"
 	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/logging"
 )
+
+func createLogFile(path string) (file io.WriteCloser, err error) {
+	if !filepath.IsAbs(path) {
+		path, err = filepath.Abs(path)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	directory := filepath.Dir(path)
+	if err := os.MkdirAll(directory, 0744); err != nil {
+		return nil, err
+	}
+
+	file, err = os.OpenFile(path, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0744)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return
+}
 
 func main() {
 	loggingLevel := flag.String("logging", "debug", "Global logging level")
@@ -42,7 +69,23 @@ func main() {
 		log.Fatal().Msgf("Fatal error config file: %s \n", err)
 	}
 
-	logger := logging.New(viper.GetString("logging.level"))
+	logFile, err := createLogFile(viper.GetString("logging.file"))
+
+	if err != nil {
+		log.Fatal().Err(err).Msg("Error while opening log file")
+	}
+
+	dbLogFile, err := createLogFile(viper.GetString("database.logfile"))
+
+	if err != nil {
+		log.Fatal().Err(err).Msg("Error while opening database log file")
+	}
+
+	logger := logging.New(
+		viper.GetString("logging.level"),
+		viper.GetBool("logging.console"),
+		logFile,
+	)
 
 	english := en.New()
 	uni := ut.New(english, english)
@@ -54,10 +97,17 @@ func main() {
 		logger.Fatal().Err(err).Msg("Error while registering english translations")
 	}
 
-	container := api.Container{
+	db, err := database.ConnectDB(database.Config{}, dbLogFile, viper.GetBool("debug"))
+
+	if err != nil {
+		log.Fatal().Err(err).Msg("Error while connecting to database")
+	}
+
+	diContainer := container.Container{
 		Ctx:       ctx,
-		Logger:    logger,
+		Logger:    &logger,
 		Validator: validate,
+		DB:        db,
 	}
 
 	go func(cancel *context.CancelFunc) {
@@ -69,9 +119,11 @@ func main() {
 	logger.Debug().Msg("Starting HTTP Api")
 
 	provider := api.NewFiberAPI(
+		viper.GetString("http.address"),
 		viper.GetBool("http.prefork"),
 		viper.GetBool("debug"),
-		handlers.Error(trans),
+		handlers.Error(diContainer.Logger, trans),
+		routes.RegisterRouter,
 	)
 
 	go func() {
@@ -82,9 +134,22 @@ func main() {
 				Err(err).
 				Msg("Error while shutting down application\n")
 		}
+
+		if err := database.Close(); err != nil {
+			diContainer.Logger.Err(err).Msg("Error while closing sql database file")
+		}
+
+		if err := logFile.Close(); err != nil {
+			diContainer.Logger.Err(err).Msg("Error while closing log file")
+		}
+
+		if err := dbLogFile.Close(); err != nil {
+			diContainer.Logger.Err(err).Msg("Error while closing database log file")
+		}
+
 	}()
 
-	if err := provider.Register(&container); err != nil {
+	if err := provider.Register(&diContainer); err != nil {
 		logger.Fatal().
 			Err(err).
 			Msg("Error while starting the app")

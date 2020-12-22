@@ -1,4 +1,3 @@
-sql: true # Set SQL as main secret storage, if this is set to false, mongodb uri is required
 debug: true # Debug enables PProf
 locale: en
 
@@ -10,11 +9,13 @@ database:
   port: 5432
   timezone: UTC
   sslmode: false
+  logfile: ./log/db.log
 
 # supported logging - debug, info, warning, error
 logging:
   level: info # Logger instance used in API
   console: true # Console logging
+  file: ./log/requestdecomposer.log
 
 http:
   prefork: false

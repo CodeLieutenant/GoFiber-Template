@@ -3,15 +3,17 @@ package handlers
 import (
 	"encoding/json"
 	"errors"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+
 	"github.com/go-playground/locales/en"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"github.com/rs/zerolog/log"
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
-	"net/http"
-	"net/http/httptest"
-	"testing"
 )
 
 func setupErrorHandlerApp() (*fiber.App, *validator.Validate) {
@@ -20,7 +22,7 @@ func setupErrorHandlerApp() (*fiber.App, *validator.Validate) {
 	uni := ut.New(english, english)
 	englishTranslations, _ := uni.GetTranslator("en")
 	app := fiber.New(fiber.Config{
-		ErrorHandler: Error(englishTranslations),
+		ErrorHandler: Error(&log.Logger, englishTranslations),
 	})
 	return app, v
 }
