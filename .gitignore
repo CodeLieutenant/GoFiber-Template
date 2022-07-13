@@ -1,6 +1,7 @@
 build/
 config.*
 !config.example.*
+!config.go
 coverage.txt
 logs/
 bin/
