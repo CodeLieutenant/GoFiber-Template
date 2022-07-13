@@ -4,10 +4,11 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/http/handlers/hello_world"
-	"github.com/BrosSquad/GoFiber-Boilerplate/testing_utils"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
+
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/http/handlers/hello_world"
+	"github.com/BrosSquad/GoFiber-Boilerplate/testing_utils"
 )
 
 func TestHelloWorldHandler(t *testing.T) {
