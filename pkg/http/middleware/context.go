@@ -5,7 +5,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/constants"
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/constants"
 )
 
 func Context(ctx *fiber.Ctx) error {

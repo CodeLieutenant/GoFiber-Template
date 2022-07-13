@@ -3,7 +3,7 @@ package container
 import (
 	"github.com/rs/zerolog"
 
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/logging"
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/logging"
 )
 
 func (c *Container) GetLogger() zerolog.Logger {

@@ -16,11 +16,11 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/requestid"
 	fiber_utils "github.com/gofiber/fiber/v2/utils"
 
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/config"
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/constants"
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/container"
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/http/middleware"
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/utils"
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/config"
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/constants"
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/container"
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/http/middleware"
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/utils"
 )
 
 func CreateApplication(c *container.Container, appName string, environment config.Env, displayInfo, enableMonitor bool, errorHandler fiber.ErrorHandler) *fiber.App {

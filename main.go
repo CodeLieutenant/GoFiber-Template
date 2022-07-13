@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/cmd"
+	"github.com/BrosSquad/GoFiber-Boilerplate/cmd"
 )
 
 

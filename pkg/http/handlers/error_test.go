@@ -13,8 +13,8 @@ import (
 	"github.com/rzajac/zltest"
 	"github.com/stretchr/testify/require"
 
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/http/handlers"
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/testing_utils"
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/http/handlers"
+	"github.com/BrosSquad/GoFiber-Boilerplate/testing_utils"
 )
 
 func setupErrorHandlerApp(t *testing.T) (*fiber.App, *validator.Validate, *zltest.Tester) {

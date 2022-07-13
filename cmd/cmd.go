@@ -6,8 +6,8 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/cmd/base"
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/cmd/commands"
+	"github.com/BrosSquad/GoFiber-Boilerplate/cmd/base"
+	"github.com/BrosSquad/GoFiber-Boilerplate/cmd/commands"
 )
 
 

@@ -8,7 +8,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/constants"
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/constants"
 )
 
 func TestContextMiddleware(t *testing.T) {

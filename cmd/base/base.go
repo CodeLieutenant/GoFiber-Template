@@ -5,9 +5,9 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/config"
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/container"
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/logging"
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/config"
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/container"
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/logging"
 )
 
 var (
