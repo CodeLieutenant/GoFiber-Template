@@ -8,11 +8,11 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/cmd/base"
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/constants"
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/container"
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/http"
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/http/handlers"
+	"github.com/BrosSquad/GoFiber-Boilerplate/cmd/base"
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/constants"
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/container"
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/http"
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/http/handlers"
 )
 
 func startHttpServer(ctx context.Context, c *container.Container) {

@@ -5,7 +5,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/spf13/viper"
 
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/config"
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/config"
 )
 
 type Container struct {

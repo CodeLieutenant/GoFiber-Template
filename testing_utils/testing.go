@@ -10,11 +10,11 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/viper"
 
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/config"
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/constants"
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/container"
-	httpapp "github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/http"
-	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/utils"
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/config"
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/constants"
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/container"
+	httpapp "github.com/BrosSquad/GoFiber-Boilerplate/pkg/http"
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/utils"
 )
 
 func GetValidator() (*validator.Validate, ut.Translator) {
