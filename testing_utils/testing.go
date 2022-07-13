@@ -3,6 +3,7 @@ package testing_utils
 import (
 	"errors"
 	"os"
+	"path/filepath"
 
 	"github.com/go-playground/locales/en"
 	ut "github.com/go-playground/universal-translator"
@@ -54,12 +55,12 @@ func CreateApplication() (*fiber.App, *container.Container) {
 func findConfig(workingDir string) (string, error) {
 	for entries, err := os.ReadDir(workingDir); err == nil; {
 		for _, entry := range entries {
-			if !entry.IsDir() && entry.Name() == "config" {
+			if !entry.IsDir() && entry.Name() == "config.yml" {
 				return workingDir, nil
 			}
 		}
 
-		workingDir, err = utils.GetAbsolutePath(workingDir + "/..")
+		workingDir, err = utils.GetAbsolutePath(filepath.Join(workingDir, ".."))
 
 		if err != nil {
 			return "", err

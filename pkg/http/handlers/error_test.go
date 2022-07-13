@@ -20,7 +20,7 @@ import (
 func setupErrorHandlerApp(t *testing.T) (*fiber.App, *validator.Validate, *zltest.Tester) {
 	v, translations := testing_utils.GetValidator()
 
-	logger, loggerTest := testing_utils.NewTest(t, zerolog.InfoLevel)
+	logger, loggerTest := testing_utils.NewTestLogger(t, zerolog.InfoLevel)
 
 	app := fiber.New(fiber.Config{
 		ErrorHandler: handlers.Error(logger, translations),
