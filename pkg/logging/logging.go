@@ -1,6 +1,8 @@
 package logging
 
 import (
+	"io"
+	"os"
 	"time"
 
 	"github.com/rs/zerolog"
@@ -9,7 +11,7 @@ import (
 
 const DateTimeFormat = "2006-01-02 15:04:05"
 
-func ConfigureDefaultLogger(level string) {
+func ConfigureDefaultLogger(level string, prettyPrint bool) {
 	zerologLevel, err := zerolog.ParseLevel(level)
 	if err != nil {
 		panic("Failed to parse logging level: " + level)
@@ -20,10 +22,18 @@ func ConfigureDefaultLogger(level string) {
 	zerolog.DurationFieldUnit = time.Microsecond
 	zerolog.TimestampFunc = time.Now().UTC
 
-	log.Logger = log.Output(zerolog.NewConsoleWriter())
+	var w io.Writer
+
+	if prettyPrint {
+		w = zerolog.NewConsoleWriter()
+	} else {
+		w = os.Stdout
+	}
+
+	log.Logger = log.Output(w)
 }
 
-func New(level string) zerolog.Logger {
+func New(level string, prettyPrint bool) zerolog.Logger {
 	var logger zerolog.Logger
 
 	zerologLevel, err := zerolog.ParseLevel(level)
@@ -31,7 +41,15 @@ func New(level string) zerolog.Logger {
 		panic("Failed to parse logging level: " + level)
 	}
 
-	logger = zerolog.New(zerolog.MultiLevelWriter(zerolog.NewConsoleWriter())).
+	var w io.Writer
+
+	if prettyPrint {
+		w = zerolog.NewConsoleWriter()
+	} else {
+		w = os.Stdout
+	}
+
+	logger = zerolog.New(w).
 		With().
 		Timestamp().
 		Logger().

@@ -9,6 +9,7 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
 	"github.com/gofiber/fiber/v2/middleware/pprof"
 	"github.com/gofiber/fiber/v2/middleware/recover"
@@ -17,11 +18,12 @@ import (
 
 	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/config"
 	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/constants"
+	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/container"
 	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/http/middleware"
 	"github.com/BrosSquad/GoFiber-GoFiber-Boilerplate/pkg/utils"
 )
 
-func CreateApplication(appName string, environment config.Env, enableMonitor bool, errorHandler fiber.ErrorHandler) *fiber.App {
+func CreateApplication(c *container.Container, appName string, environment config.Env, displayInfo, enableMonitor bool, errorHandler fiber.ErrorHandler) *fiber.App {
 	var (
 		jsonEncoder fiber_utils.JSONMarshal = json.Marshal
 		jsonDecoder fiber_utils.JSONUnmarshal
@@ -48,6 +50,12 @@ func CreateApplication(appName string, environment config.Env, enableMonitor boo
 
 	staticConfig := fiber.Config{
 		StrictRouting: true,
+		EnablePrintRoutes: displayInfo,
+		Prefork: false,
+		DisableStartupMessage: !displayInfo,
+		DisableDefaultDate: true,
+		DisableHeaderNormalizing: false,
+		DisablePreParseMultipartForm: true,
 		AppName:       appName,
 		ErrorHandler:  errorHandler,
 		JSONEncoder:   jsonEncoder,
@@ -71,11 +79,20 @@ func CreateApplication(appName string, environment config.Env, enableMonitor boo
 		ContextKey: constants.RequestIdKey,
 	}))
 
-	if !enableMonitor {
+	if environment == config.Development {
+		app.Use(logger.New(logger.Config{
+			TimeZone: "UTC",
+
+		}))
+	}
+
+	if enableMonitor {
 		app.Get("/monitor", monitor.New(monitor.Config{
 			Title: constants.AppName + " Monitor",
 		}))
 	}
+
+	registerHandlers(app, c, environment)
 
 	return app
 }

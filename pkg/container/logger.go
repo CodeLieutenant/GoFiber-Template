@@ -7,5 +7,5 @@ import (
 )
 
 func (c *Container) GetLogger() zerolog.Logger {
-	return logging.New(c.loggingLevel)
+	return logging.New(c.loggingLevel, c.loggingPrettyPrint)
 }

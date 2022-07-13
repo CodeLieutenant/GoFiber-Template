@@ -18,10 +18,13 @@ var (
 	ConfigName string
 	ConfigType string
 	LoggingLevel   string
+
+	FiberLogo bool
+	LogPrettyPrint bool
 )
 
 func LoadConfig(*cobra.Command, []string) error {
-	logging.ConfigureDefaultLogger(LoggingLevel)
+	logging.ConfigureDefaultLogger(LoggingLevel, LogPrettyPrint)
 
 	v, err := config.New(EnvironmentStr, ConfigName, ConfigType)
 
@@ -36,7 +39,7 @@ func LoadConfig(*cobra.Command, []string) error {
 }
 
 func GetContainer() *container.Container {
-	return container.New(ViperConfig, LoggingLevel, Environment)
+	return container.New(ViperConfig,LogPrettyPrint, LoggingLevel, Environment)
 }
 
 func CloseResources(*cobra.Command, []string) error {

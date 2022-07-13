@@ -17,8 +17,10 @@ import (
 
 func startHttpServer(ctx context.Context, c *container.Container) {
 	app := http.CreateApplication(
+		c,
 		constants.AppName,
 		base.Environment,
+		base.FiberLogo,
 		base.ViperConfig.GetBool("http.enable_monitor"),
 		handlers.Error(
 			c.GetLogger(),
@@ -52,6 +54,7 @@ func Serve() *cobra.Command {
 
 			defer cancel()
 
+			log.Info().Msg("Starting HTTP Server")
 			go startHttpServer(ctx, c)
 
 			<-sig

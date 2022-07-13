@@ -32,6 +32,8 @@ func Execute(version string) {
 	flags.StringVarP(&base.ConfigType, "config-type", "t", "yaml", "Configuration Type (yaml|json|toml)")
 	flags.StringVarP(&base.ConfigName, "config-name", "c", "config", "Configuration name")
 	flags.StringVarP(&base.LoggingLevel, "log-level", "l", "info", "Logging Level (Trace|Debug|Info|Warn|Error|Fatal)")
+	flags.BoolVarP(&base.FiberLogo, "fiber-logo", "f", false, "Display Fiber Information")
+	flags.BoolVarP(&base.LogPrettyPrint, "log-pretty-print", "p", false, "Pretty print STDOUT/STDERR logs")
 
 	registerCommands(rootCmd)
 

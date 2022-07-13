@@ -11,16 +11,18 @@ import (
 type Container struct {
 	config       *viper.Viper
 	loggingLevel string
+	loggingPrettyPrint bool
 	environment  config.Env
 
 	validator  *validator.Validate
 	translator ut.Translator
 }
 
-func New(config *viper.Viper, loggingLevel string, env config.Env) *Container {
+func New(config *viper.Viper, loggingPrettyPrint bool, loggingLevel string, env config.Env) *Container {
 	return &Container{
 		config:       config,
 		loggingLevel: loggingLevel,
+		loggingPrettyPrint: loggingPrettyPrint,
 		environment:  env,
 	}
 }
