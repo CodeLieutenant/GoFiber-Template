@@ -23,7 +23,7 @@ require (
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
-	github.com/klauspost/compress v1.15.7 // indirect
+	github.com/klauspost/compress v1.15.8 // indirect
 	github.com/klauspost/cpuid/v2 v2.1.0 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/magiconair/properties v1.8.6 // indirect
