@@ -6,13 +6,11 @@ import (
 
 func New(envStr, configName, configTypeStr string) (*viper.Viper, error) {
 	env, err := ParseEnvironment(envStr)
-
 	if err != nil {
 		return nil, err
 	}
 
 	configType, err := ParseConfigType(configTypeStr)
-
 	if err != nil {
 		return nil, err
 	}

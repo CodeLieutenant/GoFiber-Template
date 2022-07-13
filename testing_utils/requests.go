@@ -26,7 +26,6 @@ func getBody[T any](headers http.Header, body T) io.Reader {
 	}
 }
 
-
 type RequestModifier func(*http.Request) *http.Request
 
 func WithHeaders(headers http.Header) RequestModifier {
@@ -72,8 +71,6 @@ func WithCookies(cookies []*http.Cookie) RequestModifier {
 		return req
 	}
 }
-
-
 
 func MakeRequest[T any](method, uri string, modifiers ...RequestModifier) *http.Request {
 	var defaults []func(*http.Request) *http.Request

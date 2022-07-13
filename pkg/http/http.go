@@ -49,17 +49,17 @@ func CreateApplication(c *container.Container, appName string, environment confi
 	}
 
 	staticConfig := fiber.Config{
-		StrictRouting: true,
-		EnablePrintRoutes: displayInfo,
-		Prefork: false,
-		DisableStartupMessage: !displayInfo,
-		DisableDefaultDate: true,
-		DisableHeaderNormalizing: false,
+		StrictRouting:                true,
+		EnablePrintRoutes:            displayInfo,
+		Prefork:                      false,
+		DisableStartupMessage:        !displayInfo,
+		DisableDefaultDate:           true,
+		DisableHeaderNormalizing:     false,
 		DisablePreParseMultipartForm: true,
-		AppName:       appName,
-		ErrorHandler:  errorHandler,
-		JSONEncoder:   jsonEncoder,
-		JSONDecoder:   jsonDecoder,
+		AppName:                      appName,
+		ErrorHandler:                 errorHandler,
+		JSONEncoder:                  jsonEncoder,
+		JSONDecoder:                  jsonDecoder,
 	}
 
 	app := fiber.New(staticConfig)
@@ -82,7 +82,6 @@ func CreateApplication(c *container.Container, appName string, environment confi
 	if environment == config.Development {
 		app.Use(logger.New(logger.Config{
 			TimeZone: "UTC",
-
 		}))
 	}
 

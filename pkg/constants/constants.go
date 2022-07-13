@@ -1,8 +1,8 @@
 package constants
 
 const (
-	AppName = "GoFiber-Boilerplate"
-	RequestIdKey              = "request_id"
+	AppName      = "GoFiber-Boilerplate"
+	RequestIdKey = "request_id"
 )
 
 const (

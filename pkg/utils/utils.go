@@ -65,7 +65,6 @@ func RandomString(n int32) string {
 	buffer := make([]byte, n)
 
 	_, err := rand.Read(buffer)
-
 	if err != nil {
 		return ""
 	}
@@ -91,7 +90,6 @@ func GetAbsolutePath(path string) (string, error) {
 
 func CreateDirectoryFromFile(path string, perm fs.FileMode) (string, error) {
 	p, err := GetAbsolutePath(path)
-
 	if err != nil {
 		return "", err
 	}
@@ -138,14 +136,13 @@ func CreateFile(path string, flags int, dirMode, mode fs.FileMode) (file *os.Fil
 }
 
 func CreateLogFile(path string) (file *os.File, err error) {
-	file, err = CreateFile(path, os.O_WRONLY|os.O_APPEND, 0744, fs.FileMode(0744)|os.ModeAppend)
+	file, err = CreateFile(path, os.O_WRONLY|os.O_APPEND, 0o744, fs.FileMode(0o744)|os.ModeAppend)
 
 	return
 }
 
 func FileExists(path string) bool {
 	_, err := os.Stat(path)
-
 	if err != nil {
 		return false
 	}
@@ -155,7 +152,6 @@ func FileExists(path string) bool {
 
 func CreateDirectory(path string, perm fs.FileMode) (string, error) {
 	p, err := GetAbsolutePath(path)
-
 	if err != nil {
 		return "", err
 	}
@@ -169,7 +165,6 @@ func CreateDirectory(path string, perm fs.FileMode) (string, error) {
 
 func GetLocalIP() string {
 	addrs, err := net.InterfaceAddrs()
-
 	if err != nil {
 		return ""
 	}

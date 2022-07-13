@@ -7,13 +7,11 @@ import (
 
 type Env uint8
 
-
 const (
 	Testing Env = iota
 	Development
 	Production
 )
-
 
 func ParseEnvironment(env string) (Env, error) {
 	switch strings.ToLower(env) {

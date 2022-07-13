@@ -51,7 +51,7 @@ func TestCreateDirectory(t *testing.T) {
 
 	defer os.RemoveAll("./test-dir")
 
-	path, err := CreateDirectory("./test-dir", 0744)
+	path, err := CreateDirectory("./test-dir", 0o744)
 
 	assert.NoError(err)
 	abs, _ := filepath.Abs("./test-dir")
@@ -81,7 +81,6 @@ func random(b *testing.B) string {
 	buffer := make([]byte, 32)
 
 	n, err := rand.Read(buffer)
-
 	if err != nil {
 		b.Errorf("error while generating random buffer %v", err)
 		return ""

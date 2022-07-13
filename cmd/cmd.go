@@ -10,11 +10,9 @@ import (
 	"github.com/BrosSquad/GoFiber-Boilerplate/cmd/commands"
 )
 
-
 func registerCommands(root *cobra.Command) {
 	root.AddCommand(commands.Serve())
 }
-
 
 func Execute(version string) {
 	rootCmd := &cobra.Command{

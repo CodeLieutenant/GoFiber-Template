@@ -6,7 +6,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-
 var ErrInvalidPayload = errors.New("Invalid Payload")
 
 type ErrorResponse struct {

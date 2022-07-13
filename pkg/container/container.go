@@ -9,10 +9,10 @@ import (
 )
 
 type Container struct {
-	config       *viper.Viper
-	loggingLevel string
+	config             *viper.Viper
+	loggingLevel       string
 	loggingPrettyPrint bool
-	environment  config.Env
+	environment        config.Env
 
 	validator  *validator.Validate
 	translator ut.Translator
@@ -20,10 +20,10 @@ type Container struct {
 
 func New(config *viper.Viper, loggingPrettyPrint bool, loggingLevel string, env config.Env) *Container {
 	return &Container{
-		config:       config,
-		loggingLevel: loggingLevel,
+		config:             config,
+		loggingLevel:       loggingLevel,
 		loggingPrettyPrint: loggingPrettyPrint,
-		environment:  env,
+		environment:        env,
 	}
 }
 
