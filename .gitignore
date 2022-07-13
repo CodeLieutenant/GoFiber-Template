@@ -1,7 +1,8 @@
-tmp/
-.idea
-.vscode
-config.yml
 build/
-_debug_bin
-vendor/
+config.*
+!config.example.*
+coverage.txt
+logs/
+bin/
+tmp/
+.idea/
