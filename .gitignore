@@ -1,0 +1,8 @@
+build/
+config.*
+!config.example.*
+coverage.txt
+logs/
+bin/
+tmp/
+.idea/

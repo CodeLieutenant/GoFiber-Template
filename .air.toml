@@ -1,0 +1,30 @@
+root = "."
+tmp_dir = "tmp"
+
+[build]
+cmd = "CC=gcc CXX=g++ make build"
+bin = "bin/boilerplate"
+full_bin = "dlv exec --continue --log --listen=0.0.0.0:2345 --allow-non-terminal-interactive --headless=true --api-version=2 --accept-multiclient ./bin/boilerplate -- -env dev"
+include_ext = ["go", "yml"]
+exclude_dir = ["public", "vendor", "log", "tmp"]
+exclude_file = ["Dockerfile"]
+exclude_regex = ["_test.go"]
+exclude_unchanged = true
+follow_symlink = true
+log = "air.log"
+delay = 1000 # ms
+stop_on_error = true
+send_interrupt = true
+kill_delay = 500 # ms
+
+[log]
+time = true
+
+[color]
+main = "magenta"
+watcher = "cyan"
+build = "yellow"
+runner = "green"
+
+[misc]
+clean_on_exit = true
