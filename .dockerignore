@@ -1,8 +1,0 @@
-bin/
-build/
-README.md
-Dockerfile
-docker-compose.yml
-.gitignore
-config.*.yml
-config.yml
