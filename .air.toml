@@ -2,10 +2,10 @@ root = "."
 tmp_dir = "tmp"
 
 [build]
-cmd = "CC=gcc CXX=g++ make build"
-bin = "bin/boilerplate"
-full_bin = "dlv exec --continue --log --listen=0.0.0.0:2345 --allow-non-terminal-interactive --headless=true --api-version=2 --accept-multiclient ./bin/boilerplate -- -env dev"
+cmd = "make build"
+full_bin = "dlv exec --continue --log --listen=127.0.0.1:2345 --allow-non-terminal-interactive --headless=true --api-version=2 --accept-multiclient ./bin/gofiber-boilerplate"
 include_ext = ["go", "yml"]
+args_bin = ["--", "serve", "--env", "development", "-p"]
 exclude_dir = ["public", "vendor", "log", "tmp"]
 exclude_file = ["Dockerfile"]
 exclude_regex = ["_test.go"]

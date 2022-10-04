@@ -1,27 +1,12 @@
 package config
 
-import (
-	"errors"
-	"strings"
-)
+import "github.com/spf13/viper"
 
-type Env uint8
+func ConfigureEnv(v *viper.Viper) {
+	v.SetEnvPrefix("")
+	v.AllowEmptyEnv(true)
+}
 
-const (
-	Testing Env = iota
-	Development
-	Production
-)
-
-func ParseEnvironment(env string) (Env, error) {
-	switch strings.ToLower(env) {
-	case "prod", "production":
-		return Production, nil
-	case "dev", "development", "develop":
-		return Development, nil
-	case "testing", "test":
-		return Testing, nil
-	default:
-		return 0, errors.New("Invalid Environment")
-	}
+func EnvironmentalVariables(v *viper.Viper) {
+	// e.g. v.BindEnv("SOME_ENVIRONMENTAL_VARIALBE", "databases.scylla.hosts")
 }

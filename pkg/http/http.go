@@ -16,14 +16,15 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/requestid"
 	fiber_utils "github.com/gofiber/fiber/v2/utils"
 
-	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/config"
-	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/constants"
-	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/container"
-	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/http/middleware"
-	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/utils"
+	"github.com/nano-interactive/go-utils"
+	"github.com/nano-interactive/go-utils/environment"
+
+	"github.com/nano-interactive/GoFiber-Boilerplate/pkg/constants"
+	"github.com/nano-interactive/GoFiber-Boilerplate/pkg/container"
+	"github.com/nano-interactive/GoFiber-Boilerplate/pkg/http/middleware"
 )
 
-func CreateApplication(c *container.Container, appName string, environment config.Env, displayInfo, enableMonitor bool, errorHandler fiber.ErrorHandler) *fiber.App {
+func CreateApplication(c *container.Container, appName string, env environment.Env, displayInfo, enableMonitor bool, errorHandler fiber.ErrorHandler) *fiber.App {
 	var (
 		jsonEncoder fiber_utils.JSONMarshal = json.Marshal
 		jsonDecoder fiber_utils.JSONUnmarshal
@@ -42,7 +43,7 @@ func CreateApplication(c *container.Container, appName string, environment confi
 	} else {
 		log.Warn().
 			Str("app", appName).
-			Str("env", string(environment)).
+			Str("env", string(env)).
 			Msg("simdjson is not supported on this CPU, application performance might suffer")
 
 		jsonDecoder = json.Unmarshal
@@ -64,10 +65,10 @@ func CreateApplication(c *container.Container, appName string, environment confi
 
 	app := fiber.New(staticConfig)
 
-	switch environment {
-	case config.Development:
+	switch env {
+	case environment.Development:
 		app.Use(pprof.New())
-	case config.Production:
+	case environment.Production:
 		app.Use(recover.New())
 	}
 
@@ -79,7 +80,7 @@ func CreateApplication(c *container.Container, appName string, environment confi
 		ContextKey: constants.RequestIdKey,
 	}))
 
-	if environment == config.Development {
+	if env == environment.Development {
 		app.Use(logger.New(logger.Config{
 			TimeZone: "UTC",
 		}))
@@ -91,7 +92,7 @@ func CreateApplication(c *container.Container, appName string, environment confi
 		}))
 	}
 
-	registerHandlers(app, c, environment)
+	registerHandlers(app, c, env)
 
 	return app
 }

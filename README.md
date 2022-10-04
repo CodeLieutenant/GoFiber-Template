@@ -21,7 +21,7 @@
 - Makefile
 - Github Actions (coming soon)
 
-## Packages 
+## Packages
 - [Fiber](https://docs.gofiber.io/)
 - [Viper](https://github.com/spf13/viper)
 - [Cobra](https://cobra.dev/)
@@ -32,7 +32,7 @@
 
 ## Support
 
-If you are having problems, please let us know by [raising a new issue](https://github.com/BrosSquad/GoFiber-Boilerplate/issues/new).
+If you are having problems, please let us know by [raising a new issue](https://github.com/nano-interactive/GoFiber-Boilerplate/issues/new).
 
 ## License
 

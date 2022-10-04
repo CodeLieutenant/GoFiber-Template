@@ -1,0 +1,107 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "GoFiberBoilerplate: Production Build",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "build",
+                "ENV=production"
+            ],
+            "group": "build"
+        },
+        {
+            "label": "GoFiberBoilerplate: Hot Reload",
+            "type": "shell",
+            "command": "air",
+            "isBackground": true,
+            "args": [
+                "-c",
+                ".air.toml"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "GoFiberBoilerplate: Development Build",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "build",
+                "ENV=development"
+            ],
+            "group": "build"
+        },
+        {
+            "label": "GoFiberBoilerplate: Race Test",
+            "type": "shell",
+            "command": "go",
+            "args": [
+                "test",
+                "-race",
+                "-v",
+                "-covermode=atomic",
+                "-timeout",
+                "5m",
+                "./..."
+            ],
+            "group": "test"
+        },
+        {
+            "label": "GoFiberBoilerplate: Test",
+            "type": "shell",
+            "command": "go",
+            "args": [
+                "test",
+                "-v",
+                "-covermode=atomic",
+                "-timeout",
+                "5m",
+                "./..."
+            ],
+            "group": "test"
+        },
+        {
+            "label": "GoFiberBoilerplate: Format",
+            "type": "shell",
+            "command": "gofumpt",
+            "args": [
+                "-l",
+                "-w",
+                "."
+            ],
+            "group": "none",
+            "problemMatcher": []
+        },
+        {
+            "label": "GoFiberBoilerplate: Lint",
+            "type": "shell",
+            "command": "golangci-lint",
+            "args": [
+                "run"
+            ],
+            "group": "none"
+        },
+        {
+            "label": "GoFiberBoilerplate: GoMod Tidy",
+            "type": "shell",
+            "command": "go",
+            "args": [
+                "mod",
+                "tidy"
+            ],
+            "group": "none",
+            "problemMatcher": []
+        },
+        {
+            "label": "GoFiberBoilerplate: Security Check",
+            "type": "shell",
+            "command": "gosec",
+            "args": [
+                "./..."
+            ],
+            "group": "none",
+            "problemMatcher": []
+        }
+    ],
+}

@@ -1,0 +1,45 @@
+name: 'Testing'
+
+on:
+  workflow_call:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    branches:
+      - master
+      - develop
+jobs:
+  test:
+    # TODO: Add redis as service
+    services: {}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+        go: [ 1.19 ]
+    runs-on: ${{ matrix.os }}
+    container: golang:1.19-bullseye
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - uses: actions/cache@v2
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+      - name: Set up gotestfmt
+        run: go install github.com/haveyoudebuggedit/gotestfmt/v2/cmd/gotestfmt@latest
+      - name: Run tests
+        run: |
+          cp config.example.yml config.yml
+          go test -race -covermode=atomic -coverprofile=coverage.txt -timeout 5m -json -v ./... 2>&1 | gotestfmt
+      - uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.txt
+          flags: tests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+          verbose: true

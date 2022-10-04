@@ -6,10 +6,6 @@ const (
 )
 
 const (
-	TestUserAgent = "GoFiber-Boilerplate/Testing 1.0"
-)
-
-const (
 	CancelFuncContextKey         = "cancel"
 	CancelWillBeCalledContextKey = "cancelFnWillBeCalled"
 )

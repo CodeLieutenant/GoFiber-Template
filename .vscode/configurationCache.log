@@ -1,1 +1,0 @@
-{"buildTargets":[".PHONY","build","buildx","clean","fmt","lint","run","test","tidy"],"launchTargets":[],"customConfigurationProvider":{"workspaceBrowse":{"browsePath":[],"compilerArgs":[]},"fileIndex":[]}}

@@ -1,3 +1,57 @@
 {
-    "go.inferGopath": false
+    "go.inferGopath": false,
+    "go.testEnvVars": {
+        "CC": "gcc",
+        "CXX": "g++"
+    },
+    "go.toolsEnvVars": {
+        "CC": "gcc",
+        "CXX": "g++"
+    },
+    "go.docsTool": "guru",
+    "go.useLanguageServer": true,
+    "go.autocompleteUnimportedPackages": true,
+    "go.gotoSymbol.includeImports": true,
+    "go.gotoSymbol.includeGoroot": true,
+    "go.coverOnSave": true,
+    "go.vetOnSave": "workspace",
+    "go.coverMode": "atomic",
+    "go.addTags": {
+        "tags": "json,bson,yaml",
+        "promptForTags": true
+    },
+    "go.coverageDecorator": {
+        "type": "gutter",
+        "coveredHighlightColor": "rgba(64,128,128,0.5)",
+        "uncoveredHighlightColor": "rgba(128,64,64,0.25)",
+        "coveredGutterStyle": "blockgreen",
+        "uncoveredGutterStyle": "blockred"
+    },
+    "go.formatTool": "gofumpt",
+    "go.coverOnSingleTest": true,
+    "go.coverOnSingleTestFile": true,
+    "go.coverShowCounts": true,
+    "go.enableCodeLens": {
+        "references": true,
+        "runtest": true
+    },
+    "gopls": {
+        "expandWorkspaceToModule": true,
+        "experimentalWorkspaceModule": true,
+        "gofumpt": true,
+        "build.memoryMode": "Normal"
+    },
+    "go.lintTool": "golangci-lint",
+    "go.toolsManagement.autoUpdate": true,
+    "go.coverageOptions": "showCoveredCodeOnly",
+    "go.editorContextMenuCommands": {
+        "removeTags": true,
+        "fillStruct": true,
+        "testFile": true,
+        "testPackage": true,
+        "generateTestForFile": true,
+        "generateTestForPackage": true,
+        "benchmarkAtCursor": true
+    },
+    "go.testExplorer.showDynamicSubtestsInEditor": true,
 }

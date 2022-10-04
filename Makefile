@@ -2,8 +2,14 @@ PLATFORM ?= linux/arm64,linux/amd64
 ENV ?= development
 RACE ?= 0
 GOPATH ?= $(HOME)/go
-APP_NAME ?= boilerplate
+APP_NAME ?= gofiberboilerplate
 VERSION ?= dev
+
+EXTENSION ?=
+
+ifeq ($(OS),Windows_NT)
+	EXTENSION := .exe
+endif
 
 .PHONY: run
 run:
@@ -12,13 +18,12 @@ run:
 .PHONY: build
 build:
 ifeq ($(ENV),production)
-	@CGO_ENABLED=0 CXX=g++ CC=gcc go build -ldflags="-s -w -X 'main.Version=${VERSION}'" -o ./bin/$(APP_NAME) ./main.go
+	@CGO_ENABLED=0 CXX=g++ CC=gcc go build -ldflags="-s -w -X 'main.Version=${VERSION}'" -o ./bin/$(APP_NAME)$(EXTENSION) ./main.go
 else ifeq ($(ENV),development)
-	@CXX=g++ CC=gcc go build -o ./bin/$(APP_NAME) -gcflags "all=-N -l" ./main.go
+	@CXX=g++ CC=gcc go build -o ./bin/$(APP_NAME)$(EXTENSION) -gcflags "all=-N -l" ./main.go
 else
 	@echo "Target ${ENV} is not supported"
 endif
-	@cp ./config.example.yml bin/config.yml
 
 .PHONY: test
 test:
@@ -48,3 +53,19 @@ lint:
 .PHONY: fmt
 fmt:
 	@gofumpt -l -w .
+
+.PHONY: gosec
+gosec:
+	@gosec ./...
+
+.PHONY: setup
+setup:
+	docker compose -f ./docker/develop/docker-compose.yml up -d
+	cp config.example.yml config.yml
+
+.PHONY: update
+update:
+	go get -u
+.PHONY: vet
+vet:
+	@go vet ./...

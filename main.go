@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/BrosSquad/GoFiber-Boilerplate/cmd"
+	"github.com/nano-interactive/GoFiber-Boilerplate/cmd"
 )
 
 const Version = "0.0.1"

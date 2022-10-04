@@ -7,10 +7,10 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/nano-interactive/go-utils/environment"
+	"github.com/nano-interactive/go-utils/logging"
 
 	"github.com/nano-interactive/GoFiber-Boilerplate/pkg/config"
 	"github.com/nano-interactive/GoFiber-Boilerplate/pkg/container"
-	"github.com/nano-interactive/GoFiber-Boilerplate/pkg/logging"
 )
 
 var (
@@ -22,7 +22,6 @@ var (
 	LoggingLevel   string
 
 	LogPrettyPrint bool
-	FiberLogo bool
 )
 
 func LoadConfig(*cobra.Command, []string) (err error) {
@@ -36,6 +35,7 @@ func LoadConfig(*cobra.Command, []string) (err error) {
 
 	return nil
 }
+
 
 func GetContainer(ctx context.Context) *container.Container {
 	cfg, err := config.NewWithEnvironment(EnvironmentStr, ConfigName, ConfigType)
