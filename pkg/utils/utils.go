@@ -52,9 +52,9 @@ func IsInt(s string) bool {
 }
 
 func Getenv(env string, def ...string) string {
-	item := os.Getenv(env)
+	item, exists := os.LookupEnv(env)
 
-	if item == "" && len(def) > 0 {
+	if !exists && len(def) > 0 {
 		return def[0]
 	}
 

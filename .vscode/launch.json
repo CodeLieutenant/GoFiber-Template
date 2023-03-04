@@ -1,0 +1,38 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Boilerplate Server",
+      "type": "go",
+      "request": "attach",
+      "mode": "remote",
+      "remotePath": "${workspaceFolder}",
+      "port": 2345,
+      "host": "127.0.0.1"
+    },
+    {
+      "name": "Debug Boilerplate",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "main.go",
+      "args": [
+        "serve",
+        "--env",
+        "development",
+        "--log-level",
+        "debug",
+        "--log-pretty-print"
+      ]
+    },
+    {
+      "name": "Attach to Process",
+      "type": "go",
+      "request": "attach",
+      "mode": "local",
+      "apiVersion": 2,
+      "backend": "lldb",
+      "processId": 0
+    }
+  ]
+}

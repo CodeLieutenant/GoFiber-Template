@@ -1,6 +1,7 @@
 package http
 
 import (
+	"context"
 	"fmt"
 	"net"
 
@@ -23,7 +24,7 @@ import (
 	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/utils"
 )
 
-func CreateApplication(c *container.Container, appName string, environment config.Env, displayInfo, enableMonitor bool, errorHandler fiber.ErrorHandler) *fiber.App {
+func CreateApplication(ctx context.Context, c *container.Container, appName string, environment config.Env, displayInfo, enableMonitor bool, errorHandler fiber.ErrorHandler) *fiber.App {
 	var (
 		jsonEncoder fiber_utils.JSONMarshal = json.Marshal
 		jsonDecoder fiber_utils.JSONUnmarshal
@@ -71,7 +72,7 @@ func CreateApplication(c *container.Container, appName string, environment confi
 		app.Use(recover.New())
 	}
 
-	app.Use(middleware.Context)
+	app.Use(middleware.Context(ctx))
 	app.Use(requestid.New(requestid.Config{
 		Generator: func() string {
 			return utils.RandomString(32)

@@ -1,6 +1,7 @@
 package testing_utils
 
 import (
+	"context"
 	"errors"
 	"os"
 	"path/filepath"
@@ -49,7 +50,7 @@ func CreateApplication() (*fiber.App, *container.Container) {
 	}
 
 	c := container.New(cfg, false, "info", config.Testing)
-	return httpapp.CreateApplication(c, constants.AppName, config.Testing, false, false, nil), c
+	return httpapp.CreateApplication(context.Background(), c, constants.AppName, config.Testing, false, false, nil), c
 }
 
 func findConfig(workingDir string) (string, error) {

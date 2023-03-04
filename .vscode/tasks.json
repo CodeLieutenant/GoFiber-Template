@@ -1,0 +1,80 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Boilerplate: Production Build",
+      "type": "shell",
+      "command": "make",
+      "args": ["build", "ENV=production"],
+      "group": "build"
+    },
+    {
+      "label": "Boilerplate: Hot Reload",
+      "type": "shell",
+      "command": "air",
+      "isBackground": true,
+      "args": ["-c", ".air.toml"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Boilerplate: Development Build",
+      "type": "shell",
+      "command": "make",
+      "args": ["build", "ENV=development"],
+      "group": "build"
+    },
+    {
+      "label": "Boilerplate: Race Test",
+      "type": "shell",
+      "command": "go",
+      "args": [
+        "test",
+        "-race",
+        "-v",
+        "-covermode=atomic",
+        "-timeout",
+        "5m",
+        "./..."
+      ],
+      "group": "test"
+    },
+    {
+      "label": "Boilerplate: Test",
+      "type": "shell",
+      "command": "go",
+      "args": ["test", "-v", "-covermode=atomic", "-timeout", "5m", "./..."],
+      "group": "test"
+    },
+    {
+      "label": "Boilerplate: Format",
+      "type": "shell",
+      "command": "gofumpt",
+      "args": ["-l", "-w", "."],
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Boilerplate: Lint",
+      "type": "shell",
+      "command": "golangci-lint",
+      "args": ["run"],
+      "group": "none"
+    },
+    {
+      "label": "LiiftEngine: GoMod Tidy",
+      "type": "shell",
+      "command": "go",
+      "args": ["mod", "tidy"],
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "LiiftEngine: Security Check",
+      "type": "shell",
+      "command": "gosec",
+      "args": ["./..."],
+      "group": "none",
+      "problemMatcher": []
+    }
+  ]
+}

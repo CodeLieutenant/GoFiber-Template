@@ -17,6 +17,7 @@ import (
 
 func startHttpServer(ctx context.Context, c *container.Container) {
 	app := http.CreateApplication(
+		ctx,
 		c,
 		constants.AppName,
 		base.Environment,

@@ -8,19 +8,21 @@ import (
 	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/constants"
 )
 
-func Context(ctx *fiber.Ctx) error {
-	c, cancel := context.WithCancel(context.Background())
+func Context(base context.Context) fiber.Handler {
+	return func(ctx *fiber.Ctx) error {
+		c, cancel := context.WithCancel(base)
 
-	ctx.Locals(constants.CancelFuncContextKey, cancel)
-	ctx.SetUserContext(c)
+		ctx.Locals(constants.CancelFuncContextKey, cancel)
+		ctx.SetUserContext(c)
 
-	err := ctx.Next()
+		err := ctx.Next()
 
-	cancelFnWillBeCalled := ctx.Locals(constants.CancelWillBeCalledContextKey)
+		cancelFnWillBeCalled := ctx.Locals(constants.CancelWillBeCalledContextKey)
 
-	if cancelFnWillBeCalled == nil {
-		defer cancel()
+		if cancelFnWillBeCalled == nil {
+			defer cancel()
+		}
+
+		return err
 	}
-
-	return err
 }

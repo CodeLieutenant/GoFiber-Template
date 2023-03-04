@@ -1,4 +1,4 @@
-FROM golang:1.18 as develop
+FROM golang:1.20 as develop
 
 RUN apt update && \
     apt upgrade -y && \
@@ -24,7 +24,7 @@ EXPOSE 80
 EXPOSE 5000
 EXPOSE 3000
 
-FROM golang:1.18 as build
+FROM golang:1.20 as build
 
 ARG VERSION
 ARG APP_NAME
@@ -46,10 +46,10 @@ WORKDIR /app
 COPY --from=build /app/bin/${APP_NAME} .
 COPY --from=build /app/bin/config.yml /etc/${APP_NAME}/config.yml
 
-RUN apk update
+RUN apk update && apk install tini
 
-EXPOSE 80
 EXPOSE 5000
 EXPOSE 3000
 
-ENTRYPOINT [ "/app/${APP_NAME}" ]
+ENTRYPOINT [ "/bin/tini" ]
+CMD [ "/app/${APP_NAME}" ]

@@ -1,0 +1,45 @@
+name: 'Tests'
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    branches:
+      - master
+      - develop
+jobs:
+  unit-tests:
+    strategy:
+      matrix:
+        go: [ 1.20 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: ${{ matrix.go }}
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+      - name: Set up gotestfmt
+        run: go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@latest
+      - name: Run tests
+        run: |
+          cp config.example.yml config.yml
+          go test -covermode=atomic -coverprofile=coverage.txt -timeout 5m -json -v ./... | gotestfmt -showteststatus
+      - uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.txt
+          flags: tests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+          verbose: true

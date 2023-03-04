@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"context"
 	"testing"
 
 	"github.com/gofiber/fiber/v2"
@@ -17,7 +18,7 @@ func TestContextMiddleware(t *testing.T) {
 
 	app := fiber.New()
 
-	app.Use(Context)
+	app.Use(Context(context.Background()))
 
 	app.Get("/", func(ctx *fiber.Ctx) error {
 		return ctx.SendStatus(fiber.StatusOK)
