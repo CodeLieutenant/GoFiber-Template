@@ -19,7 +19,7 @@
 - Logging
 - Ready made Dockerfile
 - Makefile
-- Github Actions (coming soon)
+- Github Actions
 
 ## Packages 
 - [Fiber](https://docs.gofiber.io/)
