@@ -30,7 +30,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
       - name: Set up gotestfmt
-        run: go install github.com/GoTestTools/gotestfmt/blob/main/cmd/gotestfmt
+        run: go install github.com/GoTestTools/gotestfmt
       - name: Run tests
         run: |
           cp config.example.yml config.yml
