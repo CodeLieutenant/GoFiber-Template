@@ -1,11 +1,11 @@
-package middleware
+package http
 
 import (
 	"context"
 
 	"github.com/gofiber/fiber/v2"
 
-	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/constants"
+	"github.com/BrosSquad/GoFiber-Boilerplate/core/constants"
 )
 
 func Context(base context.Context) fiber.Handler {

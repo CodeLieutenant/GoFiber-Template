@@ -1,4 +1,4 @@
-package middleware_test
+package http_test
 
 import (
 	"context"
@@ -9,8 +9,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/constants"
-	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/http/middleware"
+	"github.com/BrosSquad/GoFiber-Boilerplate/core/constants"
+	"github.com/BrosSquad/GoFiber-Boilerplate/core/http"
 )
 
 func TestContextMiddleware(t *testing.T) {
@@ -18,7 +18,7 @@ func TestContextMiddleware(t *testing.T) {
 
 	assert := require.New(t)
 	app := fiber.New()
-	app.Use(middleware.Context(context.Background()))
+	app.Use(http.Context(context.Background()))
 	app.Get("/", func(ctx *fiber.Ctx) error {
 		return ctx.SendStatus(fiber.StatusOK)
 	})

@@ -3,7 +3,7 @@ package container
 import (
 	"context"
 
-	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/config"
+	"github.com/BrosSquad/GoFiber-Boilerplate/app/config"
 )
 
 type Container struct {

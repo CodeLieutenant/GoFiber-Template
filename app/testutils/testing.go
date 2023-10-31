@@ -11,9 +11,9 @@ import (
 	"github.com/samber/lo"
 	"github.com/spf13/viper"
 
-	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/config"
-	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/container"
-	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/http"
+	"github.com/BrosSquad/GoFiber-Boilerplate/app/config"
+	"github.com/BrosSquad/GoFiber-Boilerplate/app/container"
+	"github.com/BrosSquad/GoFiber-Boilerplate/app/http"
 )
 
 func GetConfig(tb testing.TB) config.Config {

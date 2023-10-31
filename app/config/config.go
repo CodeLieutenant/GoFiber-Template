@@ -1,9 +1,9 @@
 package config
 
 import (
-	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/constants"
 	"github.com/spf13/viper"
 
+	"github.com/BrosSquad/GoFiber-Boilerplate/app/constants"
 	utilsconfig "github.com/nano-interactive/go-utils/config"
 )
 

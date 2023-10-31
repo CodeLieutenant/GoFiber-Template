@@ -13,16 +13,16 @@ import (
 
 	appLogger "github.com/nano-interactive/go-utils/logging"
 
-	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/config"
-	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/constants"
-	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/container"
+	"github.com/BrosSquad/GoFiber-Boilerplate/app/config"
+	"github.com/BrosSquad/GoFiber-Boilerplate/app/container"
+	"github.com/BrosSquad/GoFiber-Boilerplate/core/constants"
 )
 
-func Execute(version string, cmds []*cobra.Command) {
+func Execute(version string, cmds []*cobra.Command, use, short, long string) {
 	rootCmd := &cobra.Command{
-		Use:     constants.AppName,
-		Short:   constants.AppName,
-		Long:    constants.AppDescription,
+		Use:     use,
+		Short:   short,
+		Long:    long,
 		Version: version,
 		PersistentPreRunE: func(cmd *cobra.Command, _ []string) error {
 			ctx := context.Background()
