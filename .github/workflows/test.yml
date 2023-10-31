@@ -3,14 +3,12 @@ name: "Testing"
 on:
   push:
     paths:
-      - "cmd/**"
       - "pkg/**"
       - "main.go"
     branches:
       - master
   pull_request:
     paths:
-      - "cmd/**"
       - "pkg/**"
       - "main.go"
     branches:

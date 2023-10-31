@@ -7,16 +7,14 @@ on:
       - "pkg/**"
       - "main.go"
     branches:
-      - main
-      - develop
+      - master
   pull_request:
     paths:
       - "cmd/**"
       - "pkg/**"
       - "main.go"
     branches:
-      - main
-      - develop
+      - master
 jobs:
   build:
     uses: "./.github/workflows/build-base.yml"

@@ -3,20 +3,16 @@ name: 'GolangCI Lint'
 on:
   push:
     paths:
-      - 'cmd/**'
       - 'pkg/**'
       - 'main.go'
     branches:
-      - main
-      - develop
+      - master
   pull_request:
     paths:
-      - 'cmd/**'
       - 'pkg/**'
       - 'main.go'
     branches:
-      - main
-      - develop
+      - master
 jobs:
   lint:
     runs-on: ubuntu-latest
