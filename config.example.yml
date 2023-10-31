@@ -1,26 +1,3 @@
 http:
-  bind: '0.0.0.0'
+  addr: '0.0.0.0'
   port: 8080
-  domain: localhost
-  enable_monitor: true
-
-cors:
-  headers:
-    - '*'
-  origins:
-    - '*'
-  methods:
-    - '*'
-
-databases:
-  redis:
-    host: redis
-    port: 6379
-    username: ''
-    password: ''
-    session:
-      db: 1
-    csrf:
-      db: 2
-    queue:
-      db: 3

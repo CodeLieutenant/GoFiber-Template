@@ -1,0 +1,70 @@
+version: '3'
+
+tasks:
+  build:
+    cmds:
+      - go build -ldflags="-s -w" -o bin/app
+      - cp config.example.yml bin/config.yml
+  package:
+    requires:
+      vars: [GOOS, GOARCH]
+    preconditions:
+      - test -f bin/app
+      - test -f bin/config.yml
+    cmds:
+      - tar -czf app-{{.GOOS }}-{{.GOARCH }}.tar.gz bin/*
+  fmt:
+    cmds:
+      - gofumpt -l -w .
+  lint:
+    cmds:
+      - golangci-lint run --color "always" -v -j 8
+  sec:
+    cmds:
+      - gosec ./...
+  tidy:
+    cmds:
+      - rm -f go.sum
+      - go mod tidy
+  update:
+    cmds:
+      - go get -u ./... # Updates regular packages
+      - go get -u -t ./... # Updates Test packages
+  cli-tools:
+    cmds:
+      - go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@latest
+      - go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+      - go install github.com/securego/gosec/v2/cmd/gosec@latest
+      - go install github.com/uudashr/gopkgs/v2/cmd/gopkgs@latest
+      - go install github.com/ramya-rao-a/go-outline@latest
+      - go install github.com/cweill/gotests/gotests@latest
+      - go install github.com/fatih/gomodifytags@latest
+      - go install github.com/daixiang0/gci@latest
+      - go install github.com/josharian/impl@latest
+      - go install github.com/haya14busa/goplay/cmd/goplay@latest
+      - go install github.com/go-delve/delve/cmd/dlv@latest
+      - go install mvdan.cc/gofumpt@latest
+      - go install github.com/swaggo/swag/cmd/swag@latest
+      - go install github.com/cosmtrek/air@latest
+  test:
+    cmds:
+      - go test -covermode=atomic -race -coverprofile=coverage.txt -timeout 5m -json -v ./... | gotestfmt -showteststatus
+    env:
+        GOMAXPROCS: 4
+  setup:
+    cmds:
+      - cp config.example.yml config.yml
+  run:
+    cmds:
+      - go run main.go {{ .CLI_ARGS }}
+  swagger-gen:
+    cmds:
+      - swag init --outputTypes="go" --parseDependency
+  docker-build:
+    requires:
+      vars: [VERSION, TARGET]
+    cmds:
+      - docker buildx build --target {{ .TARGET }} --build-arg VERSION="{{ .VERSION }}" --platform -t "brossquad/app:{{ .VERSION }}" --file ./Dockerfile .
+  clean:
+    cmds:
+      - rm -rf bin/

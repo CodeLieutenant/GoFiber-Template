@@ -1,0 +1,32 @@
+{
+  "recommendations": [
+    "task.vscode-task",
+    "rogalmic.bash-debug",
+    "mads-hartmann.bash-ide-vscode",
+    "ms-vscode-remote.remote-containers",
+    "ms-azuretools.vscode-docker",
+    "p1c2u.docker-compose",
+    "usernamehw.errorlens",
+    "github.vscode-github-actions",
+    "eamodio.gitlens",
+    "golang.go",
+    "mongodb.mongodb-vscode",
+    "christian-kohler.path-intellisense",
+    "uniquevision.vscode-plpgsql-lsp",
+    "foxundermoon.shell-format",
+    "timonwong.shellcheck",
+    "mtxr.sqltools",
+    "JordanHury.sqltools-cassandra",
+    "mtxr.sqltools-driver-pg",
+    "wayou.vscode-todo-highlight",
+    "tooltitudeteam.tooltitude",
+    "pflannery.vscode-versionlens",
+    "zxh404.vscode-proto3",
+    "redhat.vscode-yaml",
+    "ms-vscode.test-adapter-converter",
+    "GitHub.vscode-pull-request-github",
+    "ms-vscode.remote-repositories",
+    "ms-vsliveshare.vsliveshare",
+    "aaron-bond.better-comments"
+  ]
+}
