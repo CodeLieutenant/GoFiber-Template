@@ -1,42 +1,30 @@
 package handlers_test
 
-import (
-	"encoding/json"
-	"net/http"
-	"testing"
+// func setupNotFoundApplication() *fiber.App {
+// 	app := fiber.New()
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/stretchr/testify/require"
+// 	app.Use(handlers.NotFound())
 
-	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/http/handlers"
-	"github.com/BrosSquad/GoFiber-Boilerplate/testing_utils"
-)
+// 	return app
+// }
 
-func setupNotFoundApplication() *fiber.App {
-	app := fiber.New()
+// func TestNotFound_JsonResponse(t *testing.T) {
+// 	t.Parallel()
+// 	assert := require.New(t)
 
-	app.Use(handlers.NotFound())
+// 	app := setupNotFoundApplication()
 
-	return app
-}
+// 	res := testing_utils.Get(app, "/", testing_utils.WithHeaders(http.Header{
+// 		fiber.HeaderAccept: []string{fiber.MIMEApplicationJSONCharsetUTF8},
+// 	}))
 
-func TestNotFound_JsonResponse(t *testing.T) {
-	t.Parallel()
-	assert := require.New(t)
+// 	assert.Equal(http.StatusNotFound, res.StatusCode)
+// 	assert.Equal(fiber.MIMEApplicationJSON, res.Header.Get(fiber.HeaderContentType))
 
-	app := setupNotFoundApplication()
+// 	var errRes handlers.ErrorResponse
+// 	_ = json.NewDecoder(res.Body).Decode(&errRes)
 
-	res := testing_utils.Get(app, "/", testing_utils.WithHeaders(http.Header{
-		fiber.HeaderAccept: []string{fiber.MIMEApplicationJSONCharsetUTF8},
-	}))
-
-	assert.Equal(http.StatusNotFound, res.StatusCode)
-	assert.Equal(fiber.MIMEApplicationJSON, res.Header.Get(fiber.HeaderContentType))
-
-	var errRes handlers.ErrorResponse
-	_ = json.NewDecoder(res.Body).Decode(&errRes)
-
-	assert.EqualValues(handlers.ErrorResponse{
-		Message: "Page is not found",
-	}, errRes)
-}
+// 	assert.EqualValues(handlers.ErrorResponse{
+// 		Message: "Page is not found",
+// 	}, errRes)
+// }

@@ -1,34 +1,25 @@
 package container
 
 import (
-	ut "github.com/go-playground/universal-translator"
-	"github.com/go-playground/validator/v10"
-	"github.com/spf13/viper"
+	"context"
 
 	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/config"
 )
 
 type Container struct {
-	config             *viper.Viper
-	loggingLevel       string
-	loggingPrettyPrint bool
-	environment        config.Env
-
-	validator  *validator.Validate
-	translator ut.Translator
+	config *config.Config
+	ctx    context.Context
 }
 
-func New(config *viper.Viper, loggingPrettyPrint bool, loggingLevel string, env config.Env) *Container {
+func New(ctx context.Context, config config.Config) *Container {
 	return &Container{
-		config:             config,
-		loggingLevel:       loggingLevel,
-		loggingPrettyPrint: loggingPrettyPrint,
-		environment:        env,
+		ctx:    ctx,
+		config: &config,
 	}
 }
 
-func (c *Container) GetEnvironment() config.Env {
-	return c.environment
+func (c *Container) GetConfig() config.Config {
+	return *c.config
 }
 
 func (c *Container) Close() error {

@@ -1,45 +1,41 @@
-name: 'Tests'
+name: "Testing"
 
 on:
   push:
+    paths:
+      - "cmd/**"
+      - "pkg/**"
+      - "main.go"
     branches:
       - master
-      - develop
   pull_request:
+    paths:
+      - "cmd/**"
+      - "pkg/**"
+      - "main.go"
     branches:
       - master
-      - develop
+
 jobs:
   unit-tests:
     strategy:
       matrix:
-        go: [ 1.20 ]
+        go: ["1.21"]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-go@v4
         with:
           go-version: ${{ matrix.go }}
-      - uses: actions/cache@v3
+      - name: Install Task
+        uses: arduino/setup-task@v1
         with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
-      - name: Set up gotestfmt
-        run: go install gotesttools/gotestfmt@latest
+          version: 3.x
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run tests
         run: |
+          go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@latest
           cp config.example.yml config.yml
-          go test -covermode=atomic -coverprofile=coverage.txt -timeout 5m -json -v ./... | gotestfmt -showteststatus
-      - uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.txt
-          flags: tests
-          name: codecov-umbrella
-          fail_ci_if_error: true
-          verbose: true
+          task test

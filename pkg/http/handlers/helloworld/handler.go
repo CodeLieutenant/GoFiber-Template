@@ -1,4 +1,4 @@
-package hello_world
+package helloworld
 
 import (
 	"github.com/gofiber/fiber/v2"

@@ -3,14 +3,11 @@ package handlers
 import (
 	"errors"
 
+	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/dto"
 	"github.com/gofiber/fiber/v2"
 )
 
-var ErrInvalidPayload = errors.New("Invalid Payload")
-
-type ErrorResponse struct {
-	Message interface{} `json:"message,omitempty"`
-}
+var ErrInvalidPayload = errors.New("invalid payload")
 
 const pageNotFoundMessage = "Page is not found"
 
@@ -22,7 +19,7 @@ func NotFound() fiber.Handler {
 		case fiber.MIMEApplicationJSONCharsetUTF8, fiber.MIMEApplicationJSON:
 			return ctx.
 				Status(fiber.StatusNotFound).
-				JSON(ErrorResponse{Message: pageNotFoundMessage})
+				JSON(dto.ErrorResponse{Message: pageNotFoundMessage})
 		}
 
 		return ctx.SendString(pageNotFoundMessage)

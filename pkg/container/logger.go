@@ -1,11 +1,25 @@
 package container
 
 import (
-	"github.com/rs/zerolog"
+	"io"
+	"os"
 
-	"github.com/BrosSquad/GoFiber-Boilerplate/pkg/logging"
+	appLogger "github.com/nano-interactive/go-utils/logging"
+	"github.com/rs/zerolog"
 )
 
 func (c *Container) GetLogger() zerolog.Logger {
-	return logging.New(c.loggingLevel, c.loggingPrettyPrint)
+	var stdout io.Writer = os.Stdout
+
+	if c.config.Logging.PrettyPrint {
+		stdout = zerolog.NewConsoleWriter()
+	}
+
+	writer := stdout
+
+	return appLogger.New(c.config.Logging.Level, c.config.Logging.PrettyPrint).
+		Output(writer).
+		With().
+		Stack().
+		Logger()
 }

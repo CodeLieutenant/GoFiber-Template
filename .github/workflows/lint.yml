@@ -1,19 +1,29 @@
+name: 'GolangCI Lint'
+
 on:
-  pull_request:
-    branches:
-      - master
-      - develop
-  workflow_call:
   push:
+    paths:
+      - 'cmd/**'
+      - 'pkg/**'
+      - 'main.go'
     branches:
-      - master
+      - main
+      - develop
+  pull_request:
+    paths:
+      - 'cmd/**'
+      - 'pkg/**'
+      - 'main.go'
+    branches:
+      - main
       - develop
 jobs:
-  golangci-lint:
+  lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
       - name: golangci-lint
         uses: reviewdog/action-golangci-lint@v2
         with:

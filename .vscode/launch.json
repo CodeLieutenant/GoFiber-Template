@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug Boilerplate Server",
+      "name": "Debug Server",
       "type": "go",
       "request": "attach",
       "mode": "remote",
@@ -11,19 +11,12 @@
       "host": "127.0.0.1"
     },
     {
-      "name": "Debug Boilerplate",
+      "name": "Debug",
       "type": "go",
       "request": "launch",
       "mode": "debug",
       "program": "main.go",
-      "args": [
-        "serve",
-        "--env",
-        "development",
-        "--log-level",
-        "debug",
-        "--log-pretty-print"
-      ]
+      "args": ["serve"]
     },
     {
       "name": "Attach to Process",

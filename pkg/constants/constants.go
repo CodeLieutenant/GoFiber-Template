@@ -1,15 +1,16 @@
 package constants
 
 const (
-	AppName      = "GoFiber-Boilerplate"
-	RequestIdKey = "request_id"
+	AppName        = "app"
+	AppDescription = "Go Fiber Boilerplate"
 )
 
-const (
-	TestUserAgent = "GoFiber-Boilerplate/Testing 1.0"
-)
+type ContextKey string
 
 const (
-	CancelFuncContextKey         = "cancel"
-	CancelWillBeCalledContextKey = "cancelFnWillBeCalled"
+	RequestIDContextKey          ContextKey = "request_id"
+	CancelFuncContextKey         ContextKey = "cancel"
+	CancelWillBeCalledContextKey ContextKey = "cancelFnWillBeCalled"
+	ContainerContextKey          ContextKey = "container"
+	CancelContextKey             ContextKey = "cancel"
 )

@@ -1,0 +1,22 @@
+name: "Build"
+
+on:
+  push:
+    paths:
+      - "cmd/**"
+      - "pkg/**"
+      - "main.go"
+    branches:
+      - main
+      - develop
+  pull_request:
+    paths:
+      - "cmd/**"
+      - "pkg/**"
+      - "main.go"
+    branches:
+      - main
+      - develop
+jobs:
+  build:
+    uses: "./.github/workflows/build-base.yml"
