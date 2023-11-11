@@ -1,7 +1,6 @@
 package http
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"net"
@@ -40,7 +39,7 @@ func RunServer(ip string, port int, app *fiber.App) {
 	}
 }
 
-func CreateApplication(ctx context.Context, appName string, c *container.Container, displayInfo bool, routes Routes) *fiber.App {
+func CreateApplication(appName string, displayInfo bool) *fiber.App {
 	var (
 		jsonEncoder fiberutils.JSONMarshal   = json.Marshal
 		jsonDecoder fiberutils.JSONUnmarshal = json.Unmarshal
@@ -63,15 +62,13 @@ func CreateApplication(ctx context.Context, appName string, c *container.Contain
 	app := fiber.New(staticConfig)
 
 	app.Use(recover.New())
-	app.Use(Context(ctx))
+	app.Use(Context())
 	app.Use(requestid.New(requestid.Config{
 		Generator: func() string {
 			return utils.RandomString(32)
 		},
 		ContextKey: constants.RequestIDContextKey,
 	}))
-
-	routes(app, c)
 
 	return app
 }

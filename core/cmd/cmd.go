@@ -14,7 +14,6 @@ import (
 	appLogger "github.com/nano-interactive/go-utils/logging"
 
 	"github.com/BrosSquad/GoFiber-Boilerplate/app/config"
-	"github.com/BrosSquad/GoFiber-Boilerplate/app/container"
 	"github.com/BrosSquad/GoFiber-Boilerplate/core/constants"
 )
 
@@ -35,8 +34,8 @@ func Execute(version string, cmds []*cobra.Command, use, short, long string) {
 			//nolint:all
 			zerolog.ErrorStackMarshaler = pkgerrors.MarshalStack
 
-			cnt := container.New(ctx, cfg)
-			ctx = context.WithValue(ctx, constants.ContainerContextKey, cnt)
+			// cnt := container.New(ctx, cfg)
+			// ctx = context.WithValue(ctx, constants.ContainerContextKey, cnt)
 			ctx, cancel := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
 			ctx = context.WithValue(ctx, constants.CancelContextKey, cancel)
 
@@ -46,9 +45,10 @@ func Execute(version string, cmds []*cobra.Command, use, short, long string) {
 		PersistentPostRunE: func(cmd *cobra.Command, _ []string) error {
 			ctx := cmd.Context()
 			cancel := ctx.Value(constants.CancelContextKey).(context.CancelFunc)
-			cnt := ctx.Value(constants.ContainerContextKey).(*container.Container)
+			// cnt := ctx.Value(constants.ContainerContextKey).(*container.Container)
 			cancel()
-			return cnt.Close()
+			return nil
+			// return cnt.Close()
 		},
 	}
 

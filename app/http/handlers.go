@@ -1,12 +1,15 @@
 package http
 
 import (
-	"github.com/gofiber/fiber/v2"
+	"go.uber.org/fx"
 
-	"github.com/BrosSquad/GoFiber-Boilerplate/app/container"
 	"github.com/BrosSquad/GoFiber-Boilerplate/app/http/helloworld"
+	"github.com/BrosSquad/GoFiber-Boilerplate/core/http/httpfx"
 )
 
-func routes(app fiber.Router, c *container.Container) {
-	app.Get("/", helloworld.HelloWorld(c.GetLogger()))
+func Handlers() fx.Option {
+	return httpfx.Routes(
+		"/",
+		httpfx.Get("/", helloworld.HelloWorld),
+	)
 }

@@ -1,7 +1,6 @@
 package http_test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/gofiber/fiber/v2"
@@ -18,7 +17,7 @@ func TestContextMiddleware(t *testing.T) {
 
 	assert := require.New(t)
 	app := fiber.New()
-	app.Use(http.Context(context.Background()))
+	app.Use(http.Context())
 	app.Get("/", func(ctx *fiber.Ctx) error {
 		return ctx.SendStatus(fiber.StatusOK)
 	})

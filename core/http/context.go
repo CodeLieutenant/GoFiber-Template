@@ -8,9 +8,9 @@ import (
 	"github.com/BrosSquad/GoFiber-Boilerplate/core/constants"
 )
 
-func Context(base context.Context) fiber.Handler {
+func Context() fiber.Handler {
 	return func(ctx *fiber.Ctx) error {
-		c, cancel := context.WithCancel(base)
+		c, cancel := context.WithCancel(context.Background())
 
 		ctx.Locals(constants.CancelFuncContextKey, cancel)
 		ctx.SetUserContext(c)
@@ -20,7 +20,7 @@ func Context(base context.Context) fiber.Handler {
 		cancelFnWillBeCalled := ctx.Locals(constants.CancelWillBeCalledContextKey)
 
 		if cancelFnWillBeCalled == nil {
-			defer cancel()
+			cancel()
 		}
 
 		return err
