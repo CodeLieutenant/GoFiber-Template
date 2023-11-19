@@ -2,31 +2,42 @@ package commands
 
 import (
 	"github.com/spf13/cobra"
+	"go.uber.org/fx"
 
-	"github.com/BrosSquad/GoFiber-Boilerplate/app/http"
-	"github.com/BrosSquad/GoFiber-Boilerplate/core/container"
-	"github.com/BrosSquad/GoFiber-Boilerplate/core/http/httpfx"
+	"github.com/BrosSquad/GoFiber-Boilerplate/app/config"
+	"github.com/BrosSquad/GoFiber-Boilerplate/app/constants"
+	"github.com/BrosSquad/GoFiber-Boilerplate/app/handlers"
+	"github.com/BrosSquad/GoFiber-Boilerplate/core/configfx"
+	"github.com/BrosSquad/GoFiber-Boilerplate/core/fiber/fiberfx"
+	"github.com/BrosSquad/GoFiber-Boilerplate/core/loggerfx"
 )
+
+func loggerSink(cfg *config.Logging) loggerfx.Sink {
+	return loggerfx.Sink{
+		Level:       cfg.Level,
+		Type:        loggerfx.Stdout,
+		PrettyPrint: cfg.PrettyPrint,
+	}
+}
 
 func Serve() *cobra.Command {
 	return &cobra.Command{
 		Use: "serve",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			// ctx := cmd.Context()
-			app := container.New(
-				httpfx.Module("0.0.0.0:8000", "Test", true, http.Handlers()),
+		RunE: func(_ *cobra.Command, _ []string) error {
+			cfg, err := configfx.New[config.Config](constants.AppName)
+			if err != nil {
+				return err
+			}
+
+			app := fx.New(
+				configfx.Module(cfg),
+				loggerfx.Module(loggerSink(&cfg.Logging)),
+				fiberfx.App(constants.AppName, cfg.App.FiberInfo, handlers.Handlers()),
+				fiberfx.RunApp(cfg.HTTP.Addr, constants.AppName, cfg.HTTP.ShutdownTimeout),
 			)
+
 			app.Run()
-
-			// di := ctx.Value(constants.ContainerContextKey).(*container.Container)
-			// app := http.CreateApplication(ctx, di, true)
-
-			// cfg := di.GetConfig().HTTP
-			// go corehttp.RunServer(cfg.Addr, cfg.Port, app)
-
-			// <-ctx.Done()
 			return nil
-			// return app.ShutdownWithTimeout(10 * time.Second)
 		},
 	}
 }

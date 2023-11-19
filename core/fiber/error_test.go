@@ -1,4 +1,4 @@
-package http_test
+package fiber_test
 
 // func setupErrorHandlerApp(t *testing.T) (*fiber.App, *zltest.Tester) {
 // 	// v, translations := testing_utils.GetValidator()

@@ -1,4 +1,4 @@
-package http_test
+package fiber_test
 
 // func setupNotFoundApplication() *fiber.App {
 // 	app := fiber.New()
