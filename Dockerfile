@@ -1,4 +1,7 @@
-FROM golang:1.20 as develop
+ARG BASE_IMAGE="golang:1.21"
+ARG PRODUCTION_IMAGE="alpine:3"
+
+FROM $BASE_IMAGE as develop
 
 RUN apt update && \
     apt upgrade -y && \
@@ -24,7 +27,7 @@ EXPOSE 80
 EXPOSE 5000
 EXPOSE 3000
 
-FROM golang:1.20 as build
+FROM $BASE_IMAGE as build
 
 ARG VERSION
 ARG APP_NAME
@@ -37,7 +40,7 @@ RUN apt update && \
     apt install make -y && \
     make build VERSION=${VERSION} ENV=production APP_NAME=${APP_NAME}
 
-FROM alpine:3 as production
+FROM $PRODUCTION_IMAGE as production
 
 ARG APP_NAME
 

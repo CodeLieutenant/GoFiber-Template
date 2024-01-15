@@ -4,12 +4,13 @@ import (
 	"github.com/spf13/cobra"
 	"go.uber.org/fx"
 
-	"github.com/BrosSquad/GoFiber-Boilerplate/app/config"
-	"github.com/BrosSquad/GoFiber-Boilerplate/app/constants"
-	"github.com/BrosSquad/GoFiber-Boilerplate/app/handlers"
-	"github.com/BrosSquad/GoFiber-Boilerplate/core/configfx"
-	"github.com/BrosSquad/GoFiber-Boilerplate/core/fiber/fiberfx"
-	"github.com/BrosSquad/GoFiber-Boilerplate/core/loggerfx"
+	"github.com/dmalusev/uberfx-common/configfx"
+	"github.com/dmalusev/uberfx-common/fiber/fiberfx"
+	"github.com/dmalusev/uberfx-common/loggerfx"
+
+	"github.com/dmalusev/GoFiber-Boilerplate/app/config"
+	"github.com/dmalusev/GoFiber-Boilerplate/app/constants"
+	"github.com/dmalusev/GoFiber-Boilerplate/app/handlers"
 )
 
 func loggerSink(cfg *config.Logging) loggerfx.Sink {
