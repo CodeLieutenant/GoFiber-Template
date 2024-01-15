@@ -1,17 +1,20 @@
 package main
 
 import (
-	"github.com/spf13/cobra"
+	"github.com/dmalusev/uberfx-common/cmd"
 
-	"github.com/BrosSquad/GoFiber-Boilerplate/app/commands"
-	"github.com/BrosSquad/GoFiber-Boilerplate/app/constants"
-	"github.com/BrosSquad/GoFiber-Boilerplate/core/cmd"
+	"github.com/dmalusev/GoFiber-Boilerplate/app/commands"
+	"github.com/dmalusev/GoFiber-Boilerplate/app/constants"
 )
 
 const Version = "0.0.1"
 
 func main() {
-	cmd.Execute(Version, []*cobra.Command{
+	cmd.Execute(
+		Version,
+		constants.AppName,
+		constants.AppName,
+		constants.AppDescription,
 		commands.Serve(),
-	}, constants.AppName, constants.AppName, constants.AppDescription)
+	)
 }
