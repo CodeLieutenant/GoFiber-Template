@@ -1,8 +1,21 @@
 run:
-  concurrency: 16
-  timeout: 5m
+  concurrency: 8
+  timeout: 10m
   issues-exit-code: 1
   tests: true
+  modules-download-mode: mod
+  allow-parallel-runners: true
+  go: '1.24'
+
+output:
+  print-issued-lines: true
+  print-linter-name: true
+  sort-results: true
+  formats: colored-line-number
+
+issues:
+  uniq-by-line: true
+
 
 skip-dirs:
   - docs/
@@ -12,14 +25,6 @@ skip-files:
 
 modules-download-mode: mod
 allow-parallel-runners: true
-go: '1.21'
-
-output:
-  format: colored-line-number
-  print-issued-lines: true
-  print-linter-name: true
-  uniq-by-line: true
-  sort-results: true
 
 linters:
   disable-all: true
@@ -34,7 +39,6 @@ linters:
     - errchkjson
     - errname
     - errorlint
-    - exportloopref
     - forbidigo
     - gofumpt
     - ginkgolinter
@@ -45,7 +49,7 @@ linters:
     - gocritic
     - gocyclo
     - godox
-    - goerr113
+    - err113
     - goheader
     - goimports
     - gomodguard
@@ -81,7 +85,6 @@ linters:
     - sqlclosecheck
     - staticcheck
     - stylecheck
-    - tenv
     - testableexamples
     - testpackage
     - thelper
@@ -95,3 +98,14 @@ linters:
     - zerologlint
     - prealloc
     - perfsprint
+
+linters-settings:
+  govet:
+    settings:
+      shadow:
+        strict: true
+    enable-all: true
+  gocyclo:
+    min-complexity: 50
+  lll:
+    line-length: 180

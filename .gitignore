@@ -8,3 +8,4 @@ bin/
 tmp/
 .idea/
 *.log
+dist/

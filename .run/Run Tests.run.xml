@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run Tests" type="GoTestRunConfiguration" factoryName="Go Test">
+    <module name="GoFiber-Template" />
+    <working_directory value="$PROJECT_DIR$" />
+    <go_parameters value="-race -covermode=atomic -coverprofile=coverage.txt -timeout 5m" />
+    <kind value="DIRECTORY" />
+    <package value="github.com/CodeLieutenant/GoFiber-Boilerplate" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$" />
+    <framework value="gotest" />
+    <pattern value="./..." />
+    <method v="2" />
+  </configuration>
+</component>

@@ -1,24 +1,68 @@
-ARG BASE_IMAGE="golang:1.21"
-ARG PRODUCTION_IMAGE="alpine:3"
+ARG BASE_IMAGE="golang:1.24"
+ARG PRODUCTION_IMAGE="debian:bookworm-slim"
+ARG APP_NAME="GoFiber-Boilerplate"
 
-FROM $BASE_IMAGE as develop
+FROM $PRODUCTION_IMAGE AS base-production
 
-RUN apt update && \
-    apt upgrade -y && \
-    apt install iputils-ping mlocate vim -y && \
-    curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s -- -b /bin && \
-    updatedb && \
-    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest && \
-    go install github.com/uudashr/gopkgs/v2/cmd/gopkgs@latest && \
-    go install github.com/ramya-rao-a/go-outline@latest && \
-    go install github.com/cweill/gotests/gotests@latest && \
-    go install github.com/fatih/gomodifytags@latest && \
-    go install github.com/josharian/impl@latest && \
-    go install github.com/haya14busa/goplay/cmd/goplay@latest && \
-    go install github.com/go-delve/delve/cmd/dlv@latest && \
-    go install mvdan.cc/gofumpt@latest
+ENV DEBIAN_FRONTEND="noninteractive"
+ENV GODEBUG="default=go1.24,cgocheck=0,disablethp=0,panicnil=0,http2client=1,http2server=1,asynctimerchan=0,madvdontneed=0"
+ENV PATH="/usr/local/bin:${PATH}"
+
+RUN apt-get update && apt-get upgrade -y \
+	&& apt-get install -y ca-certificates \
+    && apt-get autoremove -y \
+    && apt-get clean \
+	&& rm -rf /var/lib/apt/lists/*
+
+EXPOSE 5000
+EXPOSE 2112
+EXPOSE 8080
+
+ENTRYPOINT [ "/bin/bash" ]
+CMD [ "${APP_NAME}", "serve" ]
+
+FROM base-production AS production-goreleaser
+
+COPY ${APP_NAME} /usr/local/bin/${APP_NAME}
+
+FROM base-production AS production
+
+COPY --from=build /app/bin/${APP_NAME} /usr/local/bin/${APP_NAME}
+COPY --from=build /app/bin/config.yml /etc/${APP_NAME}/config.yml
+
+
+FROM $BASE_IMAGE AS base
+
+ENV GO111MODULE=on
+ENV CFLAGS="-O0"
+ENV CXXFLAGS="-O0"
+ENV DEBIAN_FRONTEND="noninteractive"
+ENV TZ="UTC"
+ENV PATH="/usr/local/bin:${PATH}"
+
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install iputils-ping mlocate vim ca-certificates make curl libc-dev -y \
+    && curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s -- -b /usr/local/bin \
+    && sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin \
+    && updatedb
 
 WORKDIR /app
+
+FROM base AS build
+
+ENV GOAMD64=v3
+ENV GOARM64=v8.3,crypto
+ENV CFLAGS="-O3"
+ENV CXXFLAGS="-O3"
+
+ARG VERSION
+
+COPY . .
+
+RUN task build VERSION=${VERSION}
+
+FROM base AS develop
 
 COPY . .
 
@@ -27,32 +71,5 @@ EXPOSE 80
 EXPOSE 5000
 EXPOSE 3000
 
-FROM $BASE_IMAGE as build
-
-ARG VERSION
-ARG APP_NAME
-
-WORKDIR /app
-
-COPY . .
-
-RUN apt update && \
-    apt install make -y && \
-    make build VERSION=${VERSION} ENV=production APP_NAME=${APP_NAME}
-
-FROM $PRODUCTION_IMAGE as production
-
-ARG APP_NAME
-
-WORKDIR /app
-
-COPY --from=build /app/bin/${APP_NAME} .
-COPY --from=build /app/bin/config.yml /etc/${APP_NAME}/config.yml
-
-RUN apk update && apk install tini
-
-EXPOSE 5000
-EXPOSE 3000
-
-ENTRYPOINT [ "/bin/tini" ]
-CMD [ "/app/${APP_NAME}" ]
+ENTRYPOINT ["/bin/bash"]
+CMD ["air", "-c", ".air.toml"]

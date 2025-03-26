@@ -1,13 +1,16 @@
 package handlers
 
 import (
-	"github.com/dmalusev/GoFiber-Boilerplate/app/handlers/helloworld"
-	"github.com/dmalusev/uberfx-common/fiber/fiberfx"
+	"github.com/CodeLieutenant/uberfx-common/v3/http/fiber/fiberfx"
+
+	"github.com/CodeLieutenant/GoFiber-Boilerplate/app/handlers/helloworld"
 )
 
 func Handlers() fiberfx.RoutesFx {
 	return fiberfx.Routes(
-		fiberfx.WithRoutes(fiberfx.Get("/", helloworld.HelloWorld)),
+		[]fiberfx.RouteFx{
+			fiberfx.Get("/", helloworld.HelloWorld),
+		},
 		fiberfx.WithPrefix("/"),
 	)
 }

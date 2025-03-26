@@ -4,13 +4,13 @@ import (
 	"github.com/spf13/cobra"
 	"go.uber.org/fx"
 
-	"github.com/dmalusev/uberfx-common/configfx"
-	"github.com/dmalusev/uberfx-common/fiber/fiberfx"
-	"github.com/dmalusev/uberfx-common/loggerfx"
+	"github.com/CodeLieutenant/uberfx-common/v3/configfx"
+	"github.com/CodeLieutenant/uberfx-common/v3/http/fiber/fiberfx"
+	"github.com/CodeLieutenant/uberfx-common/v3/loggerfx"
 
-	"github.com/dmalusev/GoFiber-Boilerplate/app/config"
-	"github.com/dmalusev/GoFiber-Boilerplate/app/constants"
-	"github.com/dmalusev/GoFiber-Boilerplate/app/handlers"
+	"github.com/CodeLieutenant/GoFiber-Boilerplate/app/config"
+	"github.com/CodeLieutenant/GoFiber-Boilerplate/app/constants"
+	"github.com/CodeLieutenant/GoFiber-Boilerplate/app/handlers"
 )
 
 func loggerSink(cfg *config.Logging) loggerfx.Sink {
@@ -32,8 +32,8 @@ func Serve() *cobra.Command {
 
 			app := fx.New(
 				configfx.Module(cfg),
-				loggerfx.Module(loggerSink(&cfg.Logging)),
-				fiberfx.App(constants.AppName, cfg.App.FiberInfo, handlers.Handlers()),
+				loggerfx.ZerologModule(loggerSink(&cfg.Logging)),
+				fiberfx.App(constants.AppName, handlers.Handlers()),
 				fiberfx.RunApp(cfg.HTTP.Addr, constants.AppName, cfg.HTTP.ShutdownTimeout),
 			)
 

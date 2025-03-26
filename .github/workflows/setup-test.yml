@@ -1,0 +1,22 @@
+name: Setup Script Test
+
+on:
+  push:
+    paths:
+      - "setup.sh"
+    branches:
+      - master
+  pull_request:
+    paths:
+      - "setup.sh"
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Run setup script
+    runs-on: ubuntu-24.04
+    steps:
+      - name:
+        uses: actions/checkout@v4
+

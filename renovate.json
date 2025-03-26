@@ -1,0 +1,44 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "schedule": [
+    "every weekend"
+  ],
+  "labels": [
+    "renovate",
+    "dependencies"
+  ],
+  "enabledManagers": [
+    "gomod",
+    "github-actions",
+    "helm-values"
+  ],
+  "packageRules": [
+    {
+      "groupName": "All dependencies",
+      "groupSlug": "all-dependencies",
+      "matchManagers": [
+        "gomod"
+      ],
+      "enabled": true
+    },
+    {
+      "groupName": "all non-major dependencies",
+      "groupSlug": "all-minor-patch",
+      "matchPackageNames": [
+        "*"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "enabled": false
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "enabled": true
+  },
+  "osvVulnerabilityAlerts": true
+}

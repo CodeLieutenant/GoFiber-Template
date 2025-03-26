@@ -1,20 +1,17 @@
 package main
 
 import (
-	"github.com/dmalusev/uberfx-common/cmd"
+	"fmt"
+	"os"
 
-	"github.com/dmalusev/GoFiber-Boilerplate/app/commands"
-	"github.com/dmalusev/GoFiber-Boilerplate/app/constants"
+	"github.com/CodeLieutenant/GoFiber-Boilerplate/app/commands"
 )
 
 const Version = "0.0.1"
 
 func main() {
-	cmd.Execute(
-		Version,
-		constants.AppName,
-		constants.AppName,
-		constants.AppDescription,
-		commands.Serve(),
-	)
+	if err := commands.Execute(Version); err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
+	}
 }

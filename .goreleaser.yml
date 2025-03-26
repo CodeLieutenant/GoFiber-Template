@@ -1,0 +1,86 @@
+version: 2
+
+report_sizes: true
+
+builds:
+  - id: GoFiber-Boilerplate
+    goos:
+      - linux
+    binary: GoFiber-Boilerplate
+    no_unique_dist_dir: false
+    env:
+      - CFLAGS="-O3"
+      - CXXFLAGS="-O3"
+    goarch:
+      - amd64
+      - arm64
+    main: ./main.go
+    goamd64:
+      - v3 # v3 Enables AMD64 SIMD (SSE4.x,AVX2) optimizations
+    goarm64:
+      - v8.3  # ARM crypto extension for RANDOM Number generation
+
+archives:
+  - name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    files:
+      - README.md
+      - LICENSE
+
+source:
+  enabled: true
+  format: 'tar.gz'
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  version_template: '{{ .Tag }}-next'
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+
+dockers:
+  - image_templates:
+      - codeLieutenant/gofiber-boilerplate:{{ .Version }}-amd64
+    goarch: amd64
+    goamd64: v3
+    goos: linux
+    id: app-amd64
+    build_flag_templates:
+      - '--platform=linux/amd64/v3'
+      - '--target=production-goreleaser'
+      - '--build-arg="APP_NAME={{ .ProjectName }}"'
+
+  - image_templates:
+      - codeLieutenant/gofiber-boilerplate:{{ .Version }}-arm64v8
+    goarch: arm64
+    id: app-arm
+    goos: linux
+    build_flag_templates:
+      - '--platform=linux/arm64/v8'
+      - '--target=production-goreleaser'
+      - '--build-arg="APP_NAME={{ .ProjectName }}"'
+
+docker_manifests:
+  - name_template: 'codeLieutenant/gofiber-boilerplate:{{ .Version }}'
+    skip_push: false
+    image_templates:
+      - 'codeLieutenant/gofiber-boilerplate:{{ .Version }}-amd64'
+      - 'codeLieutenant/gofiber-boilerplate:{{ .Version }}-arm64v8'
+
+  - name_template: 'codeLieutenant/gofiber-boilerplate:latest'
+    skip_push: false
+    image_templates:
+      - 'codeLieutenant/gofiber-boilerplate:{{ .Version }}-amd64'
+      - 'codeLieutenant/gofiber-boilerplate:{{ .Version }}-arm64v8'
+
+release:
+  mode: keep-existing
+  make_latest: true
+  prerelease: auto
+  skip_upload: false
+  include_meta: true
