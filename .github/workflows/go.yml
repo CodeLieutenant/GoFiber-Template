@@ -43,5 +43,5 @@ jobs:
           golangci_lint_flags: "--tests=false"
       - name: Unit Tests
         run: |
-	        cp config.example.yml config.yml
-        	task test
+          cp config.example.yml config.yml
+          task test
